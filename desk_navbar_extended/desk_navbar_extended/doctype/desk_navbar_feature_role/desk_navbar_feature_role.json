@@ -1,0 +1,29 @@
+{
+  "doctype": "DocType",
+  "name": "Desk Navbar Feature Role",
+  "module": "Desk Navbar Extended",
+  "custom": 0,
+  "istable": 1,
+  "editable_grid": 1,
+  "track_changes": 0,
+  "engine": "InnoDB",
+  "field_order": [
+    "feature",
+    "role"
+  ],
+  "fields": [
+    {
+      "fieldname": "feature",
+      "fieldtype": "Select",
+      "label": "Feature",
+      "options": "clock\nvoice_search\nwide_awesomebar"
+    },
+    {
+      "fieldname": "role",
+      "fieldtype": "Link",
+      "label": "Role",
+      "options": "Role",
+      "in_list_view": 1
+    }
+  ]
+}

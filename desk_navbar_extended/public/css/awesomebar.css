@@ -1,0 +1,88 @@
+:root {
+  --desk-navbar-awesomebar-width: 560px;
+}
+
+.navbar .search-bar,
+.navbar .search-bar .input-with-feedback {
+  max-width: var(--desk-navbar-awesomebar-width);
+}
+
+.desk-navbar-awesomebar--collapsed .navbar .search-bar {
+  width: 100%;
+}
+
+.desk-navbar-extended-voice__button {
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  font-size: 1.25rem;
+  margin-left: 0.25rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.25rem;
+  border-radius: 50%;
+  transition: background-color 0.2s ease;
+}
+
+.desk-navbar-extended-voice__button.is-recording {
+  background-color: var(--bg-red, #fceaea);
+  color: var(--text-red, #c00000);
+}
+
+.desk-navbar-extended-voice__status {
+  margin-left: 0.5rem;
+  font-size: 0.75rem;
+  color: var(--gray-700, #6b7280);
+}
+
+.desk-navbar-extended-clock {
+  display: grid;
+  gap: 0.25rem;
+  padding: 0.25rem 0;
+}
+
+.desk-navbar-extended-clock__zone {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  gap: 0.5rem;
+  border-left: 3px solid var(--desk-navbar-extended-accent, transparent);
+  padding-left: 0.5rem;
+}
+
+.desk-navbar-extended-clock__label {
+  font-weight: 600;
+}
+
+.desk-navbar-extended-clock__time {
+  font-variant-numeric: tabular-nums;
+}
+
+.desk-navbar-extended-clock__events-header {
+  margin-top: 0.5rem;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  color: var(--gray-600, #4b5563);
+}
+
+.desk-navbar-extended-clock__events {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.desk-navbar-extended-clock__event {
+  display: flex;
+  flex-direction: column;
+  padding: 0.25rem 0;
+}
+
+.desk-navbar-extended-clock__event-subject {
+  font-weight: 500;
+}
+
+.desk-navbar-extended-clock__event-meta {
+  font-size: 0.75rem;
+  color: var(--gray-600, #4b5563);
+}

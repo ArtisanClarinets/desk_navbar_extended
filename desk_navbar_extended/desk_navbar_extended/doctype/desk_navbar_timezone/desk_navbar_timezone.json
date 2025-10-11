@@ -1,0 +1,36 @@
+{
+  "doctype": "DocType",
+  "name": "Desk Navbar Timezone",
+  "module": "Desk Navbar Extended",
+  "custom": 0,
+  "istable": 1,
+  "editable_grid": 1,
+  "track_changes": 0,
+  "engine": "InnoDB",
+  "field_order": [
+    "city_label",
+    "time_zone",
+    "color"
+  ],
+  "fields": [
+    {
+      "fieldname": "city_label",
+      "fieldtype": "Data",
+      "label": "City Label",
+      "in_list_view": 1,
+      "reqd": 1
+    },
+    {
+      "fieldname": "time_zone",
+      "fieldtype": "Data",
+      "label": "IANA Time Zone",
+      "reqd": 1,
+      "in_list_view": 1
+    },
+    {
+      "fieldname": "color",
+      "fieldtype": "Color",
+      "label": "Accent Color"
+    }
+  ]
+}

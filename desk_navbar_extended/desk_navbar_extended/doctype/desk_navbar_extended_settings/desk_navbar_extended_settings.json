@@ -1,0 +1,116 @@
+{
+  "doctype": "DocType",
+  "name": "Desk Navbar Extended Settings",
+  "module": "Desk Navbar Extended",
+  "custom": 0,
+  "istable": 0,
+  "editable_grid": 0,
+  "issingle": 1,
+  "track_changes": 0,
+  "engine": "InnoDB",
+  "field_order": [
+    "section_general",
+    "enable_clock",
+    "enable_voice_search",
+    "enable_wide_awesomebar",
+    "feature_roles",
+    "section_clock",
+    "clock_time_format",
+    "show_calendar_excerpts",
+    "timezone_event_limit",
+    "time_zones",
+    "section_awesomebar",
+    "awesomebar_default_width",
+    "awesomebar_mobile_collapse",
+    "enable_usage_analytics"
+  ],
+  "fields": [
+    {
+      "fieldname": "section_general",
+      "fieldtype": "Section Break",
+      "label": "General"
+    },
+    {
+      "fieldname": "enable_clock",
+      "fieldtype": "Check",
+      "label": "Enable Clock",
+      "default": "1"
+    },
+    {
+      "fieldname": "enable_voice_search",
+      "fieldtype": "Check",
+      "label": "Enable Voice Search",
+      "default": "0"
+    },
+    {
+      "fieldname": "enable_wide_awesomebar",
+      "fieldtype": "Check",
+      "label": "Enable Wide Awesomebar",
+      "default": "1"
+    },
+    {
+      "fieldname": "feature_roles",
+      "fieldtype": "Table",
+      "options": "Desk Navbar Feature Role",
+      "label": "Feature Role Overrides"
+    },
+    {
+      "fieldname": "section_clock",
+      "fieldtype": "Section Break",
+      "label": "Clock"
+    },
+    {
+      "fieldname": "clock_time_format",
+      "fieldtype": "Select",
+      "label": "Time Format",
+      "options": "12h\n24h",
+      "default": "12h"
+    },
+    {
+      "fieldname": "show_calendar_excerpts",
+      "fieldtype": "Check",
+      "label": "Show Calendar Excerpts",
+      "default": "1"
+    },
+    {
+      "fieldname": "timezone_event_limit",
+      "fieldtype": "Int",
+      "label": "Calendar Event Limit",
+      "default": "3"
+    },
+    {
+      "fieldname": "time_zones",
+      "fieldtype": "Table",
+      "options": "Desk Navbar Timezone",
+      "label": "Additional Time Zones"
+    },
+    {
+      "fieldname": "section_awesomebar",
+      "fieldtype": "Section Break",
+      "label": "Awesomebar"
+    },
+    {
+      "fieldname": "awesomebar_default_width",
+      "fieldtype": "Int",
+      "label": "Default Width (px)",
+      "default": "560"
+    },
+    {
+      "fieldname": "awesomebar_mobile_collapse",
+      "fieldtype": "Check",
+      "label": "Collapse on Mobile",
+      "default": "1"
+    },
+    {
+      "fieldname": "enable_usage_analytics",
+      "fieldtype": "Check",
+      "label": "Enable Usage Analytics",
+      "default": "0"
+    }
+  ],
+  "permissions": [
+    {
+      "role": "System Manager"
+    }
+  ]
+}
