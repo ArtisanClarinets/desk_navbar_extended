@@ -1,0 +1,63 @@
+{
+  "doctype": "DocType",
+  "name": "Desk Navbar Search Metric",
+  "module": "Desk Navbar Extended",
+  "custom": 0,
+  "istable": 0,
+  "editable_grid": 0,
+  "track_changes": 0,
+  "engine": "InnoDB",
+  "field_order": [
+    "event_ts",
+    "search_length",
+    "execution_ms",
+    "status",
+    "error_message",
+    "actor_hash"
+  ],
+  "fields": [
+    {
+      "fieldname": "event_ts",
+      "fieldtype": "Datetime",
+      "label": "Event Timestamp",
+      "reqd": 1
+    },
+    {
+      "fieldname": "search_length",
+      "fieldtype": "Int",
+      "label": "Search Length",
+      "reqd": 1
+    },
+    {
+      "fieldname": "execution_ms",
+      "fieldtype": "Float",
+      "label": "Execution Time (ms)",
+      "reqd": 1
+    },
+    {
+      "fieldname": "status",
+      "fieldtype": "Select",
+      "label": "Status",
+      "options": "success\nerror\ncancelled",
+      "reqd": 1
+    },
+    {
+      "fieldname": "error_message",
+      "fieldtype": "Small Text",
+      "label": "Error Message"
+    },
+    {
+      "fieldname": "actor_hash",
+      "fieldtype": "Data",
+      "label": "Actor Hash",
+      "read_only": 1,
+      "hidden": 1
+    }
+  ],
+  "permissions": [
+    {
+      "role": "System Manager"
+    }
+  ]
+}
+
