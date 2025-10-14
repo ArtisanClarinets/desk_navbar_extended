@@ -3,7 +3,12 @@
 from __future__ import annotations
 
 import frappe
+from frappe.model.document import Document
 
+class DeskNavbarExtendedSettings(Document):
+    """Desk Navbar Extended Settings doctype."""
+
+    pass
 
 def get_settings_doc() -> frappe.model.document.Document:
     """Return the singleton settings document, creating it if missing."""
