@@ -13,6 +13,21 @@
     "enable_clock",
     "enable_voice_search",
     "enable_wide_awesomebar",
+    "enable_smart_filters",
+    "enable_saved_searches",
+    "enable_quick_create",
+    "enable_pins",
+    "enable_grouped_history",
+    "enable_command_palette",
+    "enable_density_toggle",
+    "enable_notifications_center",
+    "enable_role_toggles",
+    "enable_kpi_widgets",
+    "enable_timezone_switcher",
+    "enable_voice_actions",
+    "enable_help_search",
+    "enable_layout_bookmarks",
+    "enable_usage_analytics",
     "feature_roles",
     "section_clock",
     "clock_time_format",
@@ -22,7 +37,10 @@
     "section_awesomebar",
     "awesomebar_default_width",
     "awesomebar_mobile_collapse",
-    "enable_usage_analytics"
+    "section_quick_create",
+    "quick_create_doctypes",
+    "section_kpi",
+    "kpi_refresh_interval"
   ],
   "fields": [
     {
@@ -47,6 +65,110 @@
       "fieldtype": "Check",
       "label": "Enable Wide Awesomebar",
       "default": "1"
+    },
+    {
+      "fieldname": "enable_smart_filters",
+      "fieldtype": "Check",
+      "label": "Enable Smart Search Filters",
+      "default": "1",
+      "description": "Adds filter UI and filtered search endpoint"
+    },
+    {
+      "fieldname": "enable_saved_searches",
+      "fieldtype": "Check",
+      "label": "Enable Saved Searches",
+      "default": "1",
+      "description": "Per-user quick filters"
+    },
+    {
+      "fieldname": "enable_quick_create",
+      "fieldtype": "Check",
+      "label": "Enable Quick Create",
+      "default": "1",
+      "description": "Shortcut launcher for common DocTypes"
+    },
+    {
+      "fieldname": "enable_pins",
+      "fieldtype": "Check",
+      "label": "Enable Pinned Items",
+      "default": "1",
+      "description": "Favorites bar"
+    },
+    {
+      "fieldname": "enable_grouped_history",
+      "fieldtype": "Check",
+      "label": "Enable Grouped History",
+      "default": "1",
+      "description": "Groups by app/doctype"
+    },
+    {
+      "fieldname": "enable_command_palette",
+      "fieldtype": "Check",
+      "label": "Enable Command Palette (Ctrl+K)",
+      "default": "1",
+      "description": "Modal fuzzy actions"
+    },
+    {
+      "fieldname": "enable_density_toggle",
+      "fieldtype": "Check",
+      "label": "Enable Compact/Expanded Toggle",
+      "default": "1",
+      "description": "User preference stored per user"
+    },
+    {
+      "fieldname": "enable_notifications_center",
+      "fieldtype": "Check",
+      "label": "Enable Notifications Center",
+      "default": "1",
+      "description": "Lists and quick actions"
+    },
+    {
+      "fieldname": "enable_role_toggles",
+      "fieldtype": "Check",
+      "label": "Enable Role-Based Feature Toggles",
+      "default": "1",
+      "description": "Uses Desk Navbar Feature Role"
+    },
+    {
+      "fieldname": "enable_kpi_widgets",
+      "fieldtype": "Check",
+      "label": "Enable KPI Widgets in Navbar",
+      "default": "0",
+      "description": "Glanceable metrics"
+    },
+    {
+      "fieldname": "enable_timezone_switcher",
+      "fieldtype": "Check",
+      "label": "Enable Timezone Switcher",
+      "default": "1",
+      "description": "Uses Desk Navbar Timezone"
+    },
+    {
+      "fieldname": "enable_voice_actions",
+      "fieldtype": "Check",
+      "label": "Enable Voice Action Commands",
+      "default": "0",
+      "description": "Extends voice_search.js"
+    },
+    {
+      "fieldname": "enable_help_search",
+      "fieldtype": "Check",
+      "label": "Enable Help/Docs Search",
+      "default": "1",
+      "description": "Frappe docs and translations"
+    },
+    {
+      "fieldname": "enable_layout_bookmarks",
+      "fieldtype": "Check",
+      "label": "Enable Layout Bookmarks",
+      "default": "0",
+      "description": "Save/restore desk layout"
+    },
+    {
+      "fieldname": "enable_usage_analytics",
+      "fieldtype": "Check",
+      "label": "Enable Usage Analytics",
+      "default": "0"
     },
     {
       "fieldname": "feature_roles",
@@ -102,10 +224,29 @@
       "default": "1"
     },
     {
-      "fieldname": "enable_usage_analytics",
-      "fieldtype": "Check",
-      "label": "Enable Usage Analytics",
-      "default": "0"
+      "fieldname": "section_quick_create",
+      "fieldtype": "Section Break",
+      "label": "Quick Create",
+      "depends_on": "eval:doc.enable_quick_create"
+    },
+    {
+      "fieldname": "quick_create_doctypes",
+      "fieldtype": "Small Text",
+      "label": "Quick Create DocTypes (comma-separated)",
+      "description": "Leave empty to auto-detect from user permissions"
+    },
+    {
+      "fieldname": "section_kpi",
+      "fieldtype": "Section Break",
+      "label": "KPI Widgets",
+      "depends_on": "eval:doc.enable_kpi_widgets"
+    },
+    {
+      "fieldname": "kpi_refresh_interval",
+      "fieldtype": "Int",
+      "label": "KPI Refresh Interval (seconds)",
+      "default": "300",
+      "description": "How often to refresh KPI data"
     }
   ],
   "permissions": [

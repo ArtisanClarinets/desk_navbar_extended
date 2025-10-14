@@ -1,0 +1,73 @@
+{
+  "doctype": "DocType",
+  "name": "Desk Navbar Pin",
+  "module": "Desk Navbar Extended",
+  "custom": 0,
+  "istable": 0,
+  "editable_grid": 1,
+  "track_changes": 0,
+  "engine": "InnoDB",
+  "autoname": "format:DNP-{####}",
+  "naming_rule": "By fieldname",
+  "field_order": [
+    "label",
+    "route",
+    "column_break_1",
+    "icon",
+    "color",
+    "sequence"
+  ],
+  "fields": [
+    {
+      "fieldname": "label",
+      "fieldtype": "Data",
+      "label": "Label",
+      "reqd": 1,
+      "in_list_view": 1
+    },
+    {
+      "fieldname": "route",
+      "fieldtype": "Data",
+      "label": "Route",
+      "reqd": 1,
+      "in_list_view": 1,
+      "description": "Frappe route (e.g., /app/sales-invoice)"
+    },
+    {
+      "fieldname": "column_break_1",
+      "fieldtype": "Column Break"
+    },
+    {
+      "fieldname": "icon",
+      "fieldtype": "Data",
+      "label": "Icon",
+      "description": "Icon class (e.g., octicon octicon-star)"
+    },
+    {
+      "fieldname": "color",
+      "fieldtype": "Color",
+      "label": "Color"
+    },
+    {
+      "fieldname": "sequence",
+      "fieldtype": "Int",
+      "label": "Sequence",
+      "default": "0",
+      "in_list_view": 1
+    }
+  ],
+  "permissions": [
+    {
+      "role": "All",
+      "if_owner": 1,
+      "select": 1,
+      "read": 1,
+      "write": 1,
+      "create": 1,
+      "delete": 1
+    }
+  ],
+  "sort_field": "sequence",
+  "sort_order": "ASC",
+  "title_field": "label"
+}

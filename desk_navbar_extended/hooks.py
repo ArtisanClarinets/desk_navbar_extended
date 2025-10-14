@@ -2,20 +2,35 @@ from . import __version__ as app_version  # noqa
 
 app_name = "desk_navbar_extended"
 app_title = "Desk Navbar Extended"
-app_publisher = "Gavin D'souza"
+app_publisher = "Gavin D'souza Modified by Dylan Thompson"
 app_description = "Tweaks in Desk's Navbar to boost Productivity"
-app_email = "gavin18d@gmail.com"
+app_email = "thompson.d.r.92@gmail.com"
 app_license = "MIT"
 
 # Includes in <head>
 # ------------------
 
 # include js, css files in header of desk.html
-app_include_css = "/assets/desk_navbar_extended/css/awesomebar.css"
+app_include_css = [
+    "/assets/desk_navbar_extended/css/awesomebar.css",
+    "/assets/desk_navbar_extended/css/desk_navbar_extended.css",
+]
 app_include_js = [
     "/assets/desk_navbar_extended/js/desk_navbar_extended.js",
     "/assets/desk_navbar_extended/js/voice_search.js",
     "/assets/desk_navbar_extended/js/awesomebar_layout.js",
+    # Phase 2 modules
+    "/assets/desk_navbar_extended/js/keyboard_manager.js",
+    "/assets/desk_navbar_extended/js/command_palette.js",
+    "/assets/desk_navbar_extended/js/search_filters.js",
+    "/assets/desk_navbar_extended/js/saved_searches.js",
+    "/assets/desk_navbar_extended/js/pins.js",
+    "/assets/desk_navbar_extended/js/quick_create.js",
+    "/assets/desk_navbar_extended/js/history.js",
+    "/assets/desk_navbar_extended/js/notifications_center.js",
+    "/assets/desk_navbar_extended/js/kpi_widgets.js",
+    "/assets/desk_navbar_extended/js/help_search.js",
+    "/assets/desk_navbar_extended/js/density_toggle.js",
 ]
 
 # include js, css files in header of web template

@@ -236,6 +236,12 @@
 
   async function init() {
     const settings = await fetchSettings();
+    
+    // Store settings globally for new modules
+    frappe.desk_navbar_extended = frappe.desk_navbar_extended || {};
+    frappe.desk_navbar_extended.settings = settings;
+    
+    // Initialize existing features
     if (settings.features.clock) {
       whenClockActionAvailable(() => {
         bootstrapClock();
@@ -247,6 +253,9 @@
     if (settings.features.wide_awesomebar && window.desk_navbar_extended?.awesomebar) {
       window.desk_navbar_extended.awesomebar.init(settings);
     }
+    
+    // Emit ready event for new Phase 2 modules
+    $(document).trigger("frappe.desk_navbar_extended.ready");
   }
 
   frappe.ready(() => {

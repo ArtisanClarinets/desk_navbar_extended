@@ -27,14 +27,18 @@ def get_enabled_features_for_user(user: str | None = None) -> dict[str, bool]:
     user = user or frappe.session.user
     settings = get_settings_doc()
     role_overrides = {}
-    for row in settings.feature_roles:
-        feature_key = (row.feature or "").strip().lower().replace(" ", "_")
-        if not feature_key:
-            continue
-        role_overrides.setdefault(feature_key, set()).add(row.role)
+    
+    if settings.enable_role_toggles:
+        for row in settings.feature_roles:
+            feature_key = (row.feature or "").strip().lower().replace(" ", "_")
+            if not feature_key:
+                continue
+            role_overrides.setdefault(feature_key, set()).add(row.role)
 
     def is_enabled(fieldname: str) -> bool:
         enabled = bool(settings.get(fieldname))
+        if not settings.enable_role_toggles:
+            return enabled
         overrides = role_overrides.get(fieldname.replace("enable_", ""), set())
         if not overrides:
             return enabled
@@ -45,6 +49,20 @@ def get_enabled_features_for_user(user: str | None = None) -> dict[str, bool]:
         "clock": is_enabled("enable_clock"),
         "voice_search": is_enabled("enable_voice_search"),
         "wide_awesomebar": is_enabled("enable_wide_awesomebar"),
+        "smart_filters": is_enabled("enable_smart_filters"),
+        "saved_searches": is_enabled("enable_saved_searches"),
+        "quick_create": is_enabled("enable_quick_create"),
+        "pins": is_enabled("enable_pins"),
+        "grouped_history": is_enabled("enable_grouped_history"),
+        "command_palette": is_enabled("enable_command_palette"),
+        "density_toggle": is_enabled("enable_density_toggle"),
+        "notifications_center": is_enabled("enable_notifications_center"),
+        "role_toggles": bool(settings.enable_role_toggles),
+        "kpi_widgets": is_enabled("enable_kpi_widgets"),
+        "timezone_switcher": is_enabled("enable_timezone_switcher"),
+        "voice_actions": is_enabled("enable_voice_actions"),
+        "help_search": is_enabled("enable_help_search"),
+        "layout_bookmarks": is_enabled("enable_layout_bookmarks"),
         "usage_analytics": bool(settings.enable_usage_analytics),
     }
 

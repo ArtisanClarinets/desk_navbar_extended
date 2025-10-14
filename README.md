@@ -6,10 +6,29 @@ Tweaks in Desk's Navbar to boost Productivity
 
 ### Features
 
+**Core Features** (Already Implemented):
 1. **Enterprise desk clock** – configurable via *Desk Navbar Extended Settings* with role-scoped toggles, additional world clocks, and live calendar excerpts in the navbar dropdown.
 2. **Production voice search** – microphone control adjacent to the awesomebar with Web Speech API integration, MediaRecorder fallback, and background transcription queueing.
 3. **Configurable awesomebar layout** – width, mobile collapse behaviour, and optional analytics instrumentation exposed through the settings singleton and dedicated metrics dashboard.
 4. **Telemetry workspace** – administrators receive a workspace card summarising `Desk Navbar Search Metric` entries with realtime alerts when error rates spike.
+
+**New Power Features** (v2.0):
+5. **Smart Search Filters** – Advanced search with DocType, owner, and date filtering
+6. **Saved Searches** – Save and reuse frequent searches with global sharing capability
+7. **Pinned Items** – Quick-access favorites bar with drag-to-reorder
+8. **Quick Create Menu** – One-click access to create common documents
+9. **Grouped History** – Recent activity organized by DocType/app
+10. **Command Palette** – Keyboard-driven fuzzy search (Ctrl+K)
+11. **Notifications Center** – Centralized notification management with quick actions
+12. **Role-Based Feature Toggles** – Granular feature control per role
+13. **KPI Widgets** – Glanceable metrics in navbar (role-based)
+14. **Timezone Switcher** – Multi-timezone support with visual indicators
+15. **Help/Docs Search** – Integrated documentation search
+16. **Density Toggle** – Compact/expanded UI mode (coming soon)
+17. **Layout Bookmarks** – Save/restore workspace layouts (coming soon)
+18. **Voice Actions** – Voice-activated commands (coming soon)
+
+See [FEATURES.md](./FEATURES.md) for detailed documentation.
 
 ![](./.github/assets/same-time_zone.png)
 *When User & Site TimeZones Match*

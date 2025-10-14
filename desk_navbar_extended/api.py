@@ -44,6 +44,12 @@ def get_settings() -> dict[str, Any]:
             "default_width": cint(doc.awesomebar_default_width) or 560,
             "mobile_collapse": bool(doc.awesomebar_mobile_collapse),
         },
+        "quick_create": {
+            "doctypes": doc.quick_create_doctypes or "",
+        },
+        "kpi": {
+            "refresh_interval": cint(doc.kpi_refresh_interval) or 300,
+        },
     }
 
 

@@ -1,0 +1,115 @@
+{
+  "doctype": "DocType",
+  "name": "Desk Navbar Saved Search",
+  "module": "Desk Navbar Extended",
+  "custom": 0,
+  "istable": 0,
+  "editable_grid": 1,
+  "track_changes": 0,
+  "engine": "InnoDB",
+  "autoname": "format:DNSS-{####}",
+  "naming_rule": "By fieldname",
+  "field_order": [
+    "title",
+    "query",
+    "column_break_1",
+    "doctype_filter",
+    "is_global",
+    "section_filters",
+    "filters_json",
+    "section_meta",
+    "owner_fullname",
+    "column_break_2",
+    "modified"
+  ],
+  "fields": [
+    {
+      "fieldname": "title",
+      "fieldtype": "Data",
+      "label": "Title",
+      "reqd": 1,
+      "in_list_view": 1
+    },
+    {
+      "fieldname": "query",
+      "fieldtype": "Small Text",
+      "label": "Search Query",
+      "reqd": 1,
+      "in_list_view": 1
+    },
+    {
+      "fieldname": "column_break_1",
+      "fieldtype": "Column Break"
+    },
+    {
+      "fieldname": "doctype_filter",
+      "fieldtype": "Link",
+      "label": "DocType Filter",
+      "options": "DocType",
+      "description": "Optional: Filter searches to this DocType"
+    },
+    {
+      "fieldname": "is_global",
+      "fieldtype": "Check",
+      "label": "Is Global",
+      "default": "0",
+      "description": "Make available to all users (System Manager only)"
+    },
+    {
+      "fieldname": "section_filters",
+      "fieldtype": "Section Break",
+      "label": "Advanced Filters"
+    },
+    {
+      "fieldname": "filters_json",
+      "fieldtype": "Code",
+      "label": "Filters (JSON)",
+      "options": "JSON",
+      "description": "Additional filter criteria as JSON"
+    },
+    {
+      "fieldname": "section_meta",
+      "fieldtype": "Section Break",
+      "label": "Metadata"
+    },
+    {
+      "fieldname": "owner_fullname",
+      "fieldtype": "Data",
+      "label": "Created By",
+      "read_only": 1,
+      "in_list_view": 1
+    },
+    {
+      "fieldname": "column_break_2",
+      "fieldtype": "Column Break"
+    },
+    {
+      "fieldname": "modified",
+      "fieldtype": "Datetime",
+      "label": "Last Modified",
+      "read_only": 1
+    }
+  ],
+  "permissions": [
+    {
+      "role": "All",
+      "if_owner": 1,
+      "select": 1,
+      "read": 1,
+      "write": 1,
+      "create": 1,
+      "delete": 1
+    },
+    {
+      "role": "System Manager",
+      "select": 1,
+      "read": 1,
+      "write": 1,
+      "create": 1,
+      "delete": 1
+    }
+  ],
+  "sort_field": "modified",
+  "sort_order": "DESC",
+  "title_field": "title"
+}
