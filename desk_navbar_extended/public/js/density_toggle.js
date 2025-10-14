@@ -21,8 +21,8 @@
 
   function buildToggle() {
     const html = `
-      <button class="btn btn-sm btn-default density-toggle" title="${__("Toggle density")}">
-        <i class="fa fa-compress"></i>
+      <button class="btn btn-sm btn-default density-toggle" title="${__("Toggle density")}" aria-label="${__("Toggle density mode")}" role="button">
+        <i class="fa fa-compress" aria-hidden="true"></i>
       </button>`;
     $(".navbar-right").prepend(html);
     state.toggle = $(".density-toggle");
@@ -38,14 +38,17 @@
   }
 
   function applyDensity() {
-    $("body").removeClass("density-comfortable density-compact").addClass(\`density-\${state.density}\`);
+    $("body")
+      .removeClass("density-comfortable density-compact")
+      .addClass(`density-${state.density}`);
   }
 
   function updateIcon() {
     const icon = state.density === "compact" ? "fa-expand" : "fa-compress";
-    state.toggle.find("i").attr("class", \`fa \${icon}\`);
+    state.toggle.find("i").attr("class", `fa ${icon}`);
   }
 
   frappe.desk_navbar_extended.density_toggle = { init };
+
   $(document).on("frappe.desk_navbar_extended.ready", init);
 })();
