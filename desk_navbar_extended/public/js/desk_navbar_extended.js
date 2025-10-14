@@ -258,7 +258,20 @@
     $(document).trigger("frappe.desk_navbar_extended.ready");
   }
 
-  frappe.ready(() => {
+  function onReady(callback) {
+    if (typeof frappe !== "undefined" && typeof frappe.ready === "function") {
+      frappe.ready(callback);
+      return;
+    }
+
+    if (document.readyState === "loading") {
+      document.addEventListener("DOMContentLoaded", callback, { once: true });
+    } else {
+      callback();
+    }
+  }
+
+  onReady(() => {
     init().catch((error) => {
       console.error("Failed to initialize Desk Navbar Extended", error); // eslint-disable-line no-console
     });

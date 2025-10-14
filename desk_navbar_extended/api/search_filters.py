@@ -8,7 +8,7 @@ from typing import Any
 
 import frappe
 from frappe import _
-from frappe.desk.search import search_link, search_widget
+from frappe.desk.search import search_link
 from frappe.utils import cint, get_datetime, now_datetime
 
 from desk_navbar_extended.desk_navbar_extended.doctype.desk_navbar_extended_settings.desk_navbar_extended_settings import (
@@ -54,6 +54,20 @@ def search_with_filters(
     filters = {}
     start_time = now_datetime()
 
+    def normalize_results(raw_results: list[dict[str, Any]], result_doctype: str | None) -> list[dict[str, Any]]:
+        normalized: list[dict[str, Any]] = []
+        for item in raw_results:
+            docname = item.get("name") or item.get("value")
+            normalized.append(
+                {
+                    **item,
+                    "name": docname,
+                    "value": docname,
+                    "doctype": result_doctype or item.get("doctype"),
+                }
+            )
+        return normalized
+
     try:
         if doctype:
             # Validate doctype exists and user has permission
@@ -67,17 +81,20 @@ def search_with_filters(
                 )
 
             # Use search_link for specific doctype
-            results = search_link(
-                doctype=doctype,
-                txt=query,
-                page_length=limit,
+            results = normalize_results(
+                search_link(
+                    doctype=doctype,
+                    txt=query,
+                    page_length=limit,
+                ),
+                doctype,
             )
             
             # Apply additional filters if provided
             if owner or date_from or date_to:
                 filtered_results = []
                 for result in results:
-                    doc_name = result.get("value")
+                    doc_name = result.get("name") or result.get("value")
                     if not doc_name:
                         continue
                     
@@ -109,14 +126,17 @@ def search_with_filters(
             # Global search - search across common doctypes
             results = []
             common_doctypes = ["User", "Note", "ToDo", "Event", "Task"]
-            
+
             for dt in common_doctypes:
                 if frappe.has_permission(dt, "read"):
                     try:
-                        dt_results = search_link(
-                            doctype=dt,
-                            txt=query,
-                            page_length=5,  # Limit per doctype
+                        dt_results = normalize_results(
+                            search_link(
+                                doctype=dt,
+                                txt=query,
+                                page_length=5,  # Limit per doctype
+                            ),
+                            dt,
                         )
                         results.extend(dt_results)
                         if len(results) >= limit:
@@ -132,7 +152,7 @@ def search_with_filters(
                 for result in results:
                     try:
                         dt = result.get("doctype")
-                        dn = result.get("name")
+                        dn = result.get("name") or result.get("value")
                         if not dt or not dn:
                             continue
                         
