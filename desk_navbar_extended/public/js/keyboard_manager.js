@@ -19,12 +19,16 @@
   }
 
   function showHelp() {
-    const html = Object.entries(shortcuts).map(([key, { description }]) =>
-      \`<tr><td><kbd>\${key}</kbd></td><td>\${__(description)}</td></tr>\`
-    ).join("");
+    const html = Object.entries(shortcuts)
+      .map(
+        ([key, { description }]) =>
+          `<tr><td><kbd>${key}</kbd></td><td>${__(description)}</td></tr>`
+      )
+      .join("");
     frappe.msgprint({
       title: __("Keyboard Shortcuts"),
-      message: \`<table class="table table-bordered"><thead><tr><th>Shortcut</th><th>Action</th></tr></thead><tbody>\${html}</tbody></table>\`,
+      message:
+        `<table class="table table-bordered"><thead><tr><th>Shortcut</th><th>Action</th></tr></thead><tbody>${html}</tbody></table>`,
     });
   }
 
