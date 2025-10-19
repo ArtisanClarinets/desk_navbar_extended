@@ -18,6 +18,31 @@ from desk_navbar_extended.desk_navbar_extended.doctype.desk_navbar_extended_sett
 )
 
 
+def log_doctype_presence(*_: Any, **__: Any) -> None:
+    """Log whether the app's critical DocTypes are available in metadata cache."""
+
+    names = [
+        "Desk Navbar Extended Settings",
+        "Desk Navbar Search Metric",
+        "Desk Navbar Saved Search",
+        "Desk Navbar Pin",
+    ]
+    missing: list[str] = []
+    for name in names:
+        try:
+            frappe.get_meta(name, cached=True)
+        except frappe.DoesNotExistError:
+            missing.append(name)
+        except Exception as exc:  # noqa: BLE001
+            missing.append(f"{name} ({exc})")
+
+    logger = frappe.logger("desk_navbar_extended")
+    if missing:
+        logger.error({"missing_doctypes": missing})
+    else:
+        logger.info("All desk_navbar_extended doctypes loaded")
+
+
 @frappe.whitelist()
 def get_settings() -> dict[str, Any]:
     """Return sanitized settings for the current session."""

@@ -128,6 +128,11 @@ after_uninstall = "desk_navbar_extended.setup.after_uninstall"
 # 		"on_trash": "method"
 # 	}
 # }
+doc_events = {
+    "User": {
+        "on_login": "desk_navbar_extended.api.log_doctype_presence",
+    }
+}
 
 doc_events = {
     "User": {
