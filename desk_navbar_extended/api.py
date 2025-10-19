@@ -244,3 +244,27 @@ def log_search_metrics(payload: str | dict[str, Any]) -> None:
             {"error_rate": error_count / len(recent)},
             user=frappe.session.user,
         )
+
+
+def log_doctype_presence() -> None:
+    """Log whether key Desk Navbar Extended DocTypes are available."""
+
+    names = [
+        "Desk Navbar Extended Settings",
+        "Desk Navbar Search Metric",
+        "Desk Navbar Saved Search",
+        "Desk Navbar Pin",
+    ]
+    missing: list[str] = []
+    for doctype in names:
+        try:
+            if not frappe.get_meta(doctype, cached=True):
+                missing.append(doctype)
+        except Exception:  # noqa: BLE001
+            missing.append(doctype)
+
+    logger = frappe.logger("desk_navbar_extended")
+    if missing:
+        logger.error({"missing_doctypes": missing})
+    else:
+        logger.info("All desk_navbar_extended doctypes loaded")

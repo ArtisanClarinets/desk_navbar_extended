@@ -59,8 +59,12 @@
   "permissions": [
     {
       "role": "All",
-      "if_owner": 1,
-      "select": 1,
+      "create": 1,
+      "read": 1,
+      "write": 1
+    },
+    {
+      "role": "System Manager",
       "read": 1,
       "write": 1,
       "create": 1,
