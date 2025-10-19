@@ -4,7 +4,10 @@
 (() => {
   frappe.provide("desk_navbar_extended.search_filters");
 
-  let state = { filters: { doctype: null, owner: null, date_from: null, date_to: null }, filterBar: null };
+  let state = {
+    filters: { doctype: null, owner: null, date_from: null, date_to: null },
+    filterBar: null,
+  };
 
   function init() {
     if (!frappe.desk_navbar_extended?.settings?.enable_smart_filters) return;
@@ -25,7 +28,9 @@
           </div>
           <div class="search-filter search-filter--owner">
             <label>${__("Owner:")}</label>
-            <input type="text" class="form-control form-control-sm" placeholder="${__("Any user")}" />
+            <input type="text" class="form-control form-control-sm" placeholder="${__(
+              "Any user",
+            )}" />
           </div>
           <div class="search-filter search-filter--dates">
             <label>${__("From:")}</label>
@@ -33,7 +38,9 @@
             <label>${__("To:")}</label>
             <input type="date" class="form-control form-control-sm search-filter__date-to" />
           </div>
-          <button class="btn btn-sm btn-secondary search-filters__clear">${__("Clear")}</button>
+          <button class="btn btn-sm btn-secondary search-filters__clear">${__(
+            "Clear",
+          )}</button>
         </div>
       </div>`;
     $("#navbar-search").before(html);
@@ -49,31 +56,50 @@
 
   async function loadDoctypes() {
     try {
-      const { message } = await frappe.call({ method: "frappe.desk.search.get_names_for_mentions", freeze: false });
+      const { message } = await frappe.call({
+        method: "frappe.desk.search.get_names_for_mentions",
+        freeze: false,
+      });
       const select = state.filterBar.find(".search-filter--doctype select");
-      (message || []).forEach(dt => select.append(`<option value="${dt}">${dt}</option>`));
+      (message || []).forEach((dt) =>
+        select.append(`<option value="${dt}">${dt}</option>`),
+      );
     } catch (err) {
       console.error("[Search Filters] DocTypes load error:", err);
     }
   }
 
   function updateFilters() {
-    state.filters.doctype = state.filterBar.find(".search-filter--doctype select").val() || null;
-    state.filters.owner = state.filterBar.find(".search-filter--owner input").val().trim() || null;
-    state.filters.date_from = state.filterBar.find(".search-filter__date-from").val() || null;
-    state.filters.date_to = state.filterBar.find(".search-filter__date-to").val() || null;
+    state.filters.doctype =
+      state.filterBar.find(".search-filter--doctype select").val() || null;
+    state.filters.owner =
+      state.filterBar.find(".search-filter--owner input").val().trim() || null;
+    state.filters.date_from =
+      state.filterBar.find(".search-filter__date-from").val() || null;
+    state.filters.date_to =
+      state.filterBar.find(".search-filter__date-to").val() || null;
   }
 
   function clearFilters() {
     state.filterBar.find("select").val("");
     state.filterBar.find("input").val("");
-    state.filters = { doctype: null, owner: null, date_from: null, date_to: null };
+    state.filters = {
+      doctype: null,
+      owner: null,
+      date_from: null,
+      date_to: null,
+    };
   }
 
   function hookIntoAwesomebar() {
     const originalSearch = frappe.search.search;
-    frappe.search.search = function(query, doctype, ...args) {
-      if (state.filters.doctype || state.filters.owner || state.filters.date_from || state.filters.date_to) {
+    frappe.search.search = function (query, doctype, ...args) {
+      if (
+        state.filters.doctype ||
+        state.filters.owner ||
+        state.filters.date_from ||
+        state.filters.date_to
+      ) {
         return customSearch(query);
       }
       return originalSearch.call(this, query, doctype, ...args);

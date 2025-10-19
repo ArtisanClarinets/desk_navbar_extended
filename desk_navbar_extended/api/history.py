@@ -58,7 +58,7 @@ def get_recent_activity(limit: int = 20) -> dict[str, Any]:
             # Get doc title
             meta = frappe.get_meta(doc.reference_doctype)
             title_field = meta.get_title_field()
-            
+
             if title_field:
                 title = frappe.db.get_value(
                     doc.reference_doctype,
@@ -85,7 +85,7 @@ def get_recent_activity(limit: int = 20) -> dict[str, Any]:
     for doctype, items in sorted(grouped.items(), key=lambda x: len(x[1]), reverse=True):
         # Limit items per group
         group_items = items[:5]
-        
+
         meta = frappe.get_meta(doctype)
         groups.append(
             {

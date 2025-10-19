@@ -31,6 +31,13 @@ NAVBAR_EXTND_ITEMS = [
 def seed_default_settings() -> None:
     """Ensure the singleton settings record exists with sensible defaults."""
 
+    # First ensure the singleton exists
+    try:
+        settings_doc = frappe.get_single("Desk Navbar Extended Settings")
+    except frappe.DoesNotExistError:
+        settings_doc = frappe.new_doc("Desk Navbar Extended Settings")
+        settings_doc.insert(ignore_permissions=True)
+
     defaults = {
         "enable_clock": 1,
         "enable_voice_search": 0,
@@ -57,11 +64,19 @@ def seed_default_settings() -> None:
         "enable_usage_analytics": 0,
         "kpi_refresh_interval": 300,
     }
-    for fieldname, value in defaults.items():
-        existing = frappe.db.get_single_value("Desk Navbar Extended Settings", fieldname)
-        if existing is None:
-            frappe.db.set_value("Desk Navbar Extended Settings", None, fieldname, value)
 
+    # Update values only if they're not already set
+    for fieldname, value in defaults.items():
+        existing = settings_doc.get(fieldname)
+        if existing is None or (isinstance(existing, (int, bool)) and not existing):
+            settings_doc.set(fieldname, value)
+
+    settings_doc.save(ignore_permissions=True)
+    frappe.db.commit()
+
+    frappe.logger("desk_navbar_extended").info(
+        "Settings singleton initialized successfully", extra={"method": "seed_default_settings"}
+    )
 
 
 def add_clock_navbar_item() -> None:
@@ -74,7 +89,6 @@ def add_clock_navbar_item() -> None:
     navbar_settings.extend("settings_dropdown", NAVBAR_EXTND_ITEMS)
     navbar_settings.save()
     frappe.db.commit()
-
 
 
 def remove_clock_navbar_item() -> None:
@@ -92,9 +106,7 @@ def remove_clock_navbar_item() -> None:
                 navbar_settings.settings_dropdown[i].item_type == "Separator"
             ):
                 navbar_settings.settings_dropdown.pop(i)
-            elif i > 0 and (
-                navbar_settings.settings_dropdown[i - 1].item_type == "Separator"
-            ):
+            elif i > 0 and (navbar_settings.settings_dropdown[i - 1].item_type == "Separator"):
                 navbar_settings.settings_dropdown.pop(i - 1)
             break
     navbar_settings.save()
@@ -102,13 +114,11 @@ def remove_clock_navbar_item() -> None:
     frappe.flags.in_patch = patch_flag
 
 
-
 def after_install() -> None:
     seed_default_settings()
     settings = get_settings_doc()
     if settings.enable_clock:
         add_clock_navbar_item()
-
 
 
 def after_uninstall() -> None:

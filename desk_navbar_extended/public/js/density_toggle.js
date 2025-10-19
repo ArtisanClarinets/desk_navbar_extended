@@ -21,7 +21,9 @@
 
   function buildToggle() {
     const html = `
-      <button class="btn btn-sm btn-default density-toggle" title="${__("Toggle density")}" aria-label="${__("Toggle density mode")}" role="button">
+      <button class="btn btn-sm btn-default density-toggle" title="${__(
+        "Toggle density",
+      )}" aria-label="${__("Toggle density mode")}" role="button">
         <i class="fa fa-compress" aria-hidden="true"></i>
       </button>`;
     $(".navbar-right").prepend(html);

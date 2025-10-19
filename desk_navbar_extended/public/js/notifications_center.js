@@ -7,7 +7,8 @@
   let state = { notifications: [], panel: null, badge: null };
 
   function init() {
-    if (!frappe.desk_navbar_extended?.settings?.enable_notifications_center) return;
+    if (!frappe.desk_navbar_extended?.settings?.enable_notifications_center)
+      return;
     buildPanel();
     loadNotifications();
     console.log("[Notifications] Ready");
@@ -24,7 +25,9 @@
           <div class="dropdown-menu dropdown-menu-right notifications-center__panel">
             <div class="notifications-center__header">
               <h6>${__("Notifications")}</h6>
-              <button class="btn btn-xs btn-link notifications-center__mark-all">${__("Mark all read")}</button>
+              <button class="btn btn-xs btn-link notifications-center__mark-all">${__(
+                "Mark all read",
+              )}</button>
             </div>
             <div class="notifications-center__loading">${__("Loading...")}</div>
             <div class="notifications-center__list"></div>
@@ -34,13 +37,18 @@
     $(".navbar-right").prepend(html);
     state.panel = $(".notifications-center__panel");
     state.badge = $(".notifications-center__badge");
-    state.panel.find(".notifications-center__mark-all").on("click", markAllRead);
+    state.panel
+      .find(".notifications-center__mark-all")
+      .on("click", markAllRead);
   }
 
   async function loadNotifications() {
     showLoading();
     try {
-      const { message } = await frappe.call({ method: "desk_navbar_extended.api.notifications.get_notifications", freeze: false });
+      const { message } = await frappe.call({
+        method: "desk_navbar_extended.api.notifications.get_notifications",
+        freeze: false,
+      });
       state.notifications = message || [];
       render();
       updateBadge();
@@ -54,25 +62,36 @@
     hideLoading();
     let html = "";
     if (!state.notifications.length) {
-      html = `<div class="notifications-center__empty">${__("No notifications")}</div>`;
+      html = `<div class="notifications-center__empty">${__(
+        "No notifications",
+      )}</div>`;
     } else {
-      state.notifications.forEach(notif => {
+      state.notifications.forEach((notif) => {
         const unread = notif.read ? "" : "is-unread";
         html += `<div class="notification-item ${unread}" data-name="${notif.name}">`;
         html += `<div class="notification-item__content">`;
-        html += `<div class="notification-item__subject">${frappe.utils.escape_html(notif.subject)}</div>`;
-        html += `<div class="notification-item__time text-muted">${comment_when(notif.creation)}</div>`;
+        html += `<div class="notification-item__subject">${frappe.utils.escape_html(
+          notif.subject,
+        )}</div>`;
+        html += `<div class="notification-item__time text-muted">${comment_when(
+          notif.creation,
+        )}</div>`;
         html += `</div>`;
-        if (!notif.read) html += `<button class="btn btn-xs btn-link notification-item__mark">${__("Mark read")}</button>`;
+        if (!notif.read)
+          html += `<button class="btn btn-xs btn-link notification-item__mark">${__(
+            "Mark read",
+          )}</button>`;
         html += `</div>`;
       });
     }
     state.panel.find(".notifications-center__list").html(html);
-    state.panel.find(".notification-item__mark").on("click", function() { markRead($(this).closest(".notification-item").data("name")); });
+    state.panel.find(".notification-item__mark").on("click", function () {
+      markRead($(this).closest(".notification-item").data("name"));
+    });
   }
 
   function updateBadge() {
-    const unread = state.notifications.filter(n => !n.read).length;
+    const unread = state.notifications.filter((n) => !n.read).length;
     if (unread > 0) {
       state.badge.text(unread).removeAttr("hidden");
     } else {
@@ -82,7 +101,11 @@
 
   async function markRead(name) {
     try {
-      await frappe.call({ method: "desk_navbar_extended.api.notifications.mark_as_read", args: { name }, freeze: false });
+      await frappe.call({
+        method: "desk_navbar_extended.api.notifications.mark_as_read",
+        args: { name },
+        freeze: false,
+      });
       loadNotifications();
     } catch (err) {
       console.error("[Notifications] Mark read error:", err);
@@ -91,15 +114,24 @@
 
   async function markAllRead() {
     try {
-      await frappe.call({ method: "desk_navbar_extended.api.notifications.mark_all_as_read", freeze: false });
+      await frappe.call({
+        method: "desk_navbar_extended.api.notifications.mark_all_as_read",
+        freeze: false,
+      });
       loadNotifications();
     } catch (err) {
       console.error("[Notifications] Mark all error:", err);
     }
   }
 
-  function showLoading() { state.panel.find(".notifications-center__loading").show(); state.panel.find(".notifications-center__list").hide(); }
-  function hideLoading() { state.panel.find(".notifications-center__loading").hide(); state.panel.find(".notifications-center__list").show(); }
+  function showLoading() {
+    state.panel.find(".notifications-center__loading").show();
+    state.panel.find(".notifications-center__list").hide();
+  }
+  function hideLoading() {
+    state.panel.find(".notifications-center__loading").hide();
+    state.panel.find(".notifications-center__list").show();
+  }
 
   frappe.desk_navbar_extended.notifications_center = { init };
   $(document).on("frappe.desk_navbar_extended.ready", init);

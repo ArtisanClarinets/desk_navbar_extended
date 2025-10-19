@@ -33,7 +33,11 @@
   async function loadHistory() {
     showLoading();
     try {
-      const { message } = await frappe.call({ method: "desk_navbar_extended.api.history.get_recent_activity", args: { limit: 20 }, freeze: false });
+      const { message } = await frappe.call({
+        method: "desk_navbar_extended.api.history.get_recent_activity",
+        args: { limit: 20 },
+        freeze: false,
+      });
       state.groups = message?.by_doctype || [];
       render();
     } catch (err) {
@@ -45,14 +49,22 @@
   function render() {
     hideLoading();
     let html = "";
-    state.groups.forEach(group => {
+    state.groups.forEach((group) => {
       html += `<div class="history-group">`;
-      html += `<div class="history-group__header"><i class="${group.icon || 'fa fa-file'}"></i> ${__(group.doctype)} <span class="badge">${group.count}</span></div>`;
+      html += `<div class="history-group__header"><i class="${
+        group.icon || "fa fa-file"
+      }"></i> ${__(group.doctype)} <span class="badge">${
+        group.count
+      }</span></div>`;
       html += `<div class="history-group__items">`;
-      group.items.forEach(item => {
+      group.items.forEach((item) => {
         html += `<a class="dropdown-item history-item" href="${item.route}">`;
-        html += `<span class="history-item__name">${frappe.utils.escape_html(item.doc_name)}</span>`;
-        html += `<span class="history-item__time text-muted">${comment_when(item.modified)}</span>`;
+        html += `<span class="history-item__name">${frappe.utils.escape_html(
+          item.doc_name,
+        )}</span>`;
+        html += `<span class="history-item__time text-muted">${comment_when(
+          item.modified,
+        )}</span>`;
         html += `</a>`;
       });
       html += `</div></div>`;
@@ -60,8 +72,14 @@
     state.menu.html(html);
   }
 
-  function showLoading() { $(".history-menu__loading").show(); state.menu.hide(); }
-  function hideLoading() { $(".history-menu__loading").hide(); state.menu.show(); }
+  function showLoading() {
+    $(".history-menu__loading").show();
+    state.menu.hide();
+  }
+  function hideLoading() {
+    $(".history-menu__loading").hide();
+    state.menu.show();
+  }
 
   frappe.desk_navbar_extended.history = { init };
   $(document).on("frappe.desk_navbar_extended.ready", init);

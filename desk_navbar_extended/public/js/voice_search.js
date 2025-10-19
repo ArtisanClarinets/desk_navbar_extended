@@ -86,7 +86,8 @@
 
   function buildRecognition() {
     if (state.recognition) return state.recognition;
-    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    const SpeechRecognition =
+      window.SpeechRecognition || window.webkitSpeechRecognition;
     if (!SpeechRecognition) return null;
 
     const recognition = new SpeechRecognition();
@@ -151,7 +152,9 @@
   }
 
   function fallbackRecorderSupported() {
-    return Boolean(navigator.mediaDevices?.getUserMedia && window.MediaRecorder);
+    return Boolean(
+      navigator.mediaDevices?.getUserMedia && window.MediaRecorder,
+    );
   }
 
   async function startFallbackRecorder() {

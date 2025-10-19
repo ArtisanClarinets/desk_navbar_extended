@@ -30,10 +30,13 @@ def get_kpi_data() -> list[dict[str, Any]]:
         if frappe.has_permission("Sales Order", "read"):
             try:
                 # Open sales orders
-                open_so = frappe.db.count("Sales Order", {"docstatus": 1, "status": ["!=", "Closed"]})
-                
+                open_so = frappe.db.count(
+                    "Sales Order", {"docstatus": 1, "status": ["!=", "Closed"]}
+                )
+
                 # Monthly sales
                 from frappe.utils import get_first_day, nowdate
+
                 first_day = get_first_day(nowdate())
                 monthly_sales = frappe.db.sql(
                     """
@@ -44,23 +47,27 @@ def get_kpi_data() -> list[dict[str, Any]]:
                     (first_day,),
                 )[0][0]
 
-                kpis.append({
-                    "id": "open_sales_orders",
-                    "label": _("Open Sales Orders"),
-                    "value": open_so,
-                    "icon": "octicon octicon-note",
-                    "color": "#3b82f6",
-                    "route": "/app/sales-order",
-                })
+                kpis.append(
+                    {
+                        "id": "open_sales_orders",
+                        "label": _("Open Sales Orders"),
+                        "value": open_so,
+                        "icon": "octicon octicon-note",
+                        "color": "#3b82f6",
+                        "route": "/app/sales-order",
+                    }
+                )
 
-                kpis.append({
-                    "id": "monthly_sales",
-                    "label": _("Monthly Sales"),
-                    "value": flt(monthly_sales, 2),
-                    "format": "currency",
-                    "icon": "octicon octicon-graph",
-                    "color": "#10b981",
-                })
+                kpis.append(
+                    {
+                        "id": "monthly_sales",
+                        "label": _("Monthly Sales"),
+                        "value": flt(monthly_sales, 2),
+                        "format": "currency",
+                        "icon": "octicon octicon-graph",
+                        "color": "#10b981",
+                    }
+                )
             except Exception:  # noqa: BLE001
                 pass
 
@@ -68,15 +75,19 @@ def get_kpi_data() -> list[dict[str, Any]]:
     if "Purchase User" in user_roles or "Purchase Manager" in user_roles:
         if frappe.has_permission("Purchase Order", "read"):
             try:
-                open_po = frappe.db.count("Purchase Order", {"docstatus": 1, "status": ["!=", "Closed"]})
-                kpis.append({
-                    "id": "open_purchase_orders",
-                    "label": _("Open Purchase Orders"),
-                    "value": open_po,
-                    "icon": "octicon octicon-package",
-                    "color": "#f59e0b",
-                    "route": "/app/purchase-order",
-                })
+                open_po = frappe.db.count(
+                    "Purchase Order", {"docstatus": 1, "status": ["!=", "Closed"]}
+                )
+                kpis.append(
+                    {
+                        "id": "open_purchase_orders",
+                        "label": _("Open Purchase Orders"),
+                        "value": open_po,
+                        "icon": "octicon octicon-package",
+                        "color": "#f59e0b",
+                        "route": "/app/purchase-order",
+                    }
+                )
             except Exception:  # noqa: BLE001
                 pass
 
@@ -92,29 +103,35 @@ def get_kpi_data() -> list[dict[str, Any]]:
                     """,
                 )[0][0]
 
-                kpis.append({
-                    "id": "low_stock_items",
-                    "label": _("Low Stock Items"),
-                    "value": low_stock_items,
-                    "icon": "octicon octicon-alert",
-                    "color": "#ef4444",
-                    "route": "/app/item",
-                })
+                kpis.append(
+                    {
+                        "id": "low_stock_items",
+                        "label": _("Low Stock Items"),
+                        "value": low_stock_items,
+                        "icon": "octicon octicon-alert",
+                        "color": "#ef4444",
+                        "route": "/app/item",
+                    }
+                )
             except Exception:  # noqa: BLE001
                 pass
 
     # Task/ToDo KPIs (for all users)
     if frappe.has_permission("ToDo", "read"):
         try:
-            my_todos = frappe.db.count("ToDo", {"allocated_to": frappe.session.user, "status": "Open"})
-            kpis.append({
-                "id": "my_open_todos",
-                "label": _("My Open ToDos"),
-                "value": my_todos,
-                "icon": "octicon octicon-checklist",
-                "color": "#8b5cf6",
-                "route": "/app/todo",
-            })
+            my_todos = frappe.db.count(
+                "ToDo", {"allocated_to": frappe.session.user, "status": "Open"}
+            )
+            kpis.append(
+                {
+                    "id": "my_open_todos",
+                    "label": _("My Open ToDos"),
+                    "value": my_todos,
+                    "icon": "octicon octicon-checklist",
+                    "color": "#8b5cf6",
+                    "route": "/app/todo",
+                }
+            )
         except Exception:  # noqa: BLE001
             pass
 

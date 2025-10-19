@@ -35,7 +35,7 @@ def get_command_palette_sources() -> dict[str, Any]:
         fields=["name", "icon"],
         limit=100,
     )
-    
+
     for dt in all_doctypes:
         if frappe.has_permission(dt.name, "read"):
             meta = frappe.get_meta(dt.name)

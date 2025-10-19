@@ -27,7 +27,7 @@ def search_with_filters(
 ) -> dict[str, Any]:
     """
     Search with advanced filters.
-    
+
     Args:
         query: Search query string
         doctype: Optional DocType filter
@@ -35,7 +35,7 @@ def search_with_filters(
         date_from: Optional start date (ISO format)
         date_to: Optional end date (ISO format)
         limit: Maximum results (default 20, max 100)
-    
+
     Returns:
         dict with results and metadata
     """
@@ -54,7 +54,9 @@ def search_with_filters(
     filters = {}
     start_time = now_datetime()
 
-    def normalize_results(raw_results: list[dict[str, Any]], result_doctype: str | None) -> list[dict[str, Any]]:
+    def normalize_results(
+        raw_results: list[dict[str, Any]], result_doctype: str | None
+    ) -> list[dict[str, Any]]:
         normalized: list[dict[str, Any]] = []
         for item in raw_results:
             docname = item.get("name") or item.get("value")
@@ -73,7 +75,7 @@ def search_with_filters(
             # Validate doctype exists and user has permission
             if not frappe.db.exists("DocType", doctype):
                 frappe.throw(_("DocType {0} does not exist").format(doctype))
-            
+
             if not frappe.has_permission(doctype, "read"):
                 frappe.throw(
                     _("Insufficient permissions for DocType {0}").format(doctype),
@@ -89,7 +91,7 @@ def search_with_filters(
                 ),
                 doctype,
             )
-            
+
             # Apply additional filters if provided
             if owner or date_from or date_to:
                 filtered_results = []
@@ -97,14 +99,14 @@ def search_with_filters(
                     doc_name = result.get("name") or result.get("value")
                     if not doc_name:
                         continue
-                    
+
                     try:
                         doc = frappe.get_doc(doctype, doc_name)
-                        
+
                         # Owner filter
                         if owner and doc.owner != owner:
                             continue
-                        
+
                         # Date filters
                         if date_from or date_to:
                             doc_date = get_datetime(doc.creation)
@@ -116,11 +118,11 @@ def search_with_filters(
                                 date_to_dt = get_datetime(date_to)
                                 if doc_date > date_to_dt:
                                     continue
-                        
+
                         filtered_results.append(result)
                     except Exception:  # noqa: BLE001
                         continue
-                
+
                 results = filtered_results[:limit]
         else:
             # Global search - search across common doctypes
@@ -143,9 +145,9 @@ def search_with_filters(
                             break
                     except Exception:  # noqa: BLE001
                         continue
-            
+
             results = results[:limit]
-            
+
             # Apply owner/date filters if specified
             if owner or date_from or date_to:
                 filtered_results = []
@@ -155,12 +157,12 @@ def search_with_filters(
                         dn = result.get("name") or result.get("value")
                         if not dt or not dn:
                             continue
-                        
+
                         doc = frappe.get_doc(dt, dn)
-                        
+
                         if owner and doc.owner != owner:
                             continue
-                        
+
                         if date_from or date_to:
                             doc_date = get_datetime(doc.creation)
                             if date_from:
@@ -171,11 +173,11 @@ def search_with_filters(
                                 date_to_dt = get_datetime(date_to)
                                 if doc_date > date_to_dt:
                                     continue
-                        
+
                         filtered_results.append(result)
                     except Exception:  # noqa: BLE001
                         continue
-                
+
                 results = filtered_results[:limit]
 
         execution_ms = (now_datetime() - start_time).total_seconds() * 1000
@@ -208,10 +210,8 @@ def search_with_filters(
     except frappe.PermissionError:
         raise
     except Exception as exc:  # noqa: BLE001
-        frappe.logger("desk_navbar_extended").error(
-            f"Search error: {str(exc)}", exc_info=True
-        )
-        
+        frappe.logger("desk_navbar_extended").error(f"Search error: {str(exc)}", exc_info=True)
+
         if features.get("usage_analytics"):
             from desk_navbar_extended import api as main_api
 
@@ -223,5 +223,5 @@ def search_with_filters(
                     "error_message": str(exc)[:140],
                 }
             )
-        
+
         frappe.throw(_("Search failed: {0}").format(str(exc)))

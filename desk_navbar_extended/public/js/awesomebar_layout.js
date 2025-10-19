@@ -1,7 +1,8 @@
 (() => {
   frappe.provide("desk_navbar_extended.awesomebar");
   window.desk_navbar_extended = window.desk_navbar_extended || {};
-  window.desk_navbar_extended.awesomebar = window.desk_navbar_extended.awesomebar || {};
+  window.desk_navbar_extended.awesomebar =
+    window.desk_navbar_extended.awesomebar || {};
 
   const analyticsState = {
     wrapped: false,
@@ -62,10 +63,16 @@
     waitForSearch(() => {
       const original = frappe.search.utils.search;
       if (original.__deskNavbarWrapped) return;
-      frappe.search.utils.search = function deskNavbarInstrumentedSearch(value, ...rest) {
+      frappe.search.utils.search = function deskNavbarInstrumentedSearch(
+        value,
+        ...rest
+      ) {
         const input = resolveAwesomebarInput();
         const started = performance.now();
-        const length = typeof value === "string" ? value.length : (input?.value || "").length;
+        const length =
+          typeof value === "string"
+            ? value.length
+            : (input?.value || "").length;
         analyticsState.lastSearch = { value, started };
         try {
           const result = original.call(this, value, ...rest);

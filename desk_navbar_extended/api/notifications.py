@@ -52,6 +52,7 @@ def mark_as_read(names: str | list[str]) -> dict[str, str]:
 
     if isinstance(names, str):
         import json
+
         names = json.loads(names)
 
     for name in names:

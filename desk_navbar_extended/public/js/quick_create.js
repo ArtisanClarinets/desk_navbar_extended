@@ -29,7 +29,11 @@
 
   async function loadOptions() {
     try {
-      const { message } = await frappe.call({ method: "desk_navbar_extended.api.quick_create.get_quick_create_options", freeze: false });
+      const { message } = await frappe.call({
+        method:
+          "desk_navbar_extended.api.quick_create.get_quick_create_options",
+        freeze: false,
+      });
       state.options = message || [];
       render();
     } catch (err) {
@@ -39,13 +43,15 @@
 
   function render() {
     let html = "";
-    state.options.forEach(opt => {
+    state.options.forEach((opt) => {
       html += `<a class="dropdown-item quick-create__item" data-doctype="${opt.doctype}" href="#">`;
-      html += `<i class="${opt.icon || 'fa fa-file'}"></i> ${__(opt.label || opt.doctype)}`;
+      html += `<i class="${opt.icon || "fa fa-file"}"></i> ${__(
+        opt.label || opt.doctype,
+      )}`;
       html += `</a>`;
     });
     state.menu.html(html);
-    state.menu.find(".quick-create__item").on("click", function(e) {
+    state.menu.find(".quick-create__item").on("click", function (e) {
       e.preventDefault();
       frappe.new_doc($(this).data("doctype"));
     });

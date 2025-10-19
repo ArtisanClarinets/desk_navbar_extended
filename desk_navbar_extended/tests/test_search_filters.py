@@ -28,7 +28,7 @@ class TestSearchFilters(FrappeTestCase):
             doctype="User",
             limit=5,
         )
-        
+
         self.assertIn("results", result)
         self.assertIn("query", result)
         self.assertEqual(result["query"], "test")
@@ -37,13 +37,13 @@ class TestSearchFilters(FrappeTestCase):
     def test_search_respects_permissions(self):
         """Test that search respects doctype permissions."""
         frappe.set_user("Guest")
-        
+
         with self.assertRaises(frappe.PermissionError):
             search_filters.search_with_filters(
                 query="test",
                 doctype="User",
             )
-        
+
         frappe.set_user("Administrator")
 
     def test_search_with_owner_filter(self):
@@ -53,7 +53,7 @@ class TestSearchFilters(FrappeTestCase):
             owner="Administrator",
             limit=10,
         )
-        
+
         self.assertIn("results", result)
         self.assertIn("filters", result)
         self.assertEqual(result["filters"]["owner"], "Administrator")
@@ -64,7 +64,7 @@ class TestSearchFilters(FrappeTestCase):
             query="test",
             limit=1000,  # Request more than max
         )
-        
+
         # Should be capped at 100
         self.assertLessEqual(result["count"], 100)
 
@@ -74,10 +74,10 @@ class TestSearchFilters(FrappeTestCase):
         settings.enable_smart_filters = 0
         settings.flags.ignore_permissions = True
         settings.save()
-        
+
         with self.assertRaises(frappe.PermissionError):
             search_filters.search_with_filters(query="test")
-        
+
         # Restore
         settings.enable_smart_filters = 1
         settings.flags.ignore_permissions = True

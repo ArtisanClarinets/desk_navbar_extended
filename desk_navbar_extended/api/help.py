@@ -42,13 +42,15 @@ def search_help(query: str, limit: int = 10) -> list[dict[str, Any]]:
         )
 
         for article in articles:
-            results.append({
-                "type": "help_article",
-                "title": article.title,
-                "route": f"/app/help-article/{article.name}",
-                "icon": "octicon octicon-book",
-                "description": f"Category: {article.category or 'General'}",
-            })
+            results.append(
+                {
+                    "type": "help_article",
+                    "title": article.title,
+                    "route": f"/app/help-article/{article.name}",
+                    "icon": "octicon octicon-book",
+                    "description": f"Category: {article.category or 'General'}",
+                }
+            )
 
     # Add external Frappe docs links based on query
     doc_suggestions = _get_frappe_doc_suggestions(query)
@@ -60,7 +62,7 @@ def search_help(query: str, limit: int = 10) -> list[dict[str, Any]]:
 def _get_frappe_doc_suggestions(query: str) -> list[dict[str, Any]]:
     """Get relevant Frappe documentation links based on query."""
     suggestions = []
-    
+
     # Common topics mapping
     topic_map = {
         "doctype": {
@@ -87,13 +89,15 @@ def _get_frappe_doc_suggestions(query: str) -> list[dict[str, Any]]:
 
     for keyword, doc_info in topic_map.items():
         if keyword in query:
-            suggestions.append({
-                "type": "external_doc",
-                "title": doc_info["title"],
-                "route": doc_info["url"],
-                "icon": "octicon octicon-link-external",
-                "description": "Frappe Framework Documentation",
-                "external": True,
-            })
+            suggestions.append(
+                {
+                    "type": "external_doc",
+                    "title": doc_info["title"],
+                    "route": doc_info["url"],
+                    "icon": "octicon octicon-link-external",
+                    "description": "Frappe Framework Documentation",
+                    "external": True,
+                }
+            )
 
     return suggestions

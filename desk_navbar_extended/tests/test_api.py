@@ -22,7 +22,7 @@ class TestDeskNavbarExtendedAPI(FrappeTestCase):
                 "status": "success",
                 "search_length": 5,
                 "execution_ms": 42,
-            }
+            },
         )
         after = frappe.db.count("Desk Navbar Search Metric")
         self.assertEqual(after, before + 1)
@@ -32,15 +32,10 @@ class TestDeskNavbarExtendedAPI(FrappeTestCase):
         with patch("frappe.enqueue") as enqueue_mock:
             enqueue_mock.return_value = type("Job", (), {"id": "JOB-ID"})()
             response = frappe.call(
-                "desk_navbar_extended.api.transcribe_audio",
-                audio=payload,
-                filename="sample.webm"
+                "desk_navbar_extended.api.transcribe_audio", audio=payload, filename="sample.webm"
             )
         self.assertEqual(response["job_id"], "JOB-ID")
 
     def test_transcribe_audio_rejects_invalid_payload(self):
         with self.assertRaises(Exception):
-            frappe.call(
-                "desk_navbar_extended.api.transcribe_audio",
-                audio="not-base64=="
-            )
+            frappe.call("desk_navbar_extended.api.transcribe_audio", audio="not-base64==")

@@ -22,10 +22,14 @@
           </button>
           <div class="dropdown-menu saved-searches__menu">
             <div class="saved-searches__loading">${__("Loading...")}</div>
-            <div class="saved-searches__empty" hidden>${__("No saved searches")}</div>
+            <div class="saved-searches__empty" hidden>${__(
+              "No saved searches",
+            )}</div>
             <div class="saved-searches__list"></div>
             <div class="dropdown-divider"></div>
-            <a class="dropdown-item saved-searches__new" href="#"><i class="fa fa-plus"></i> ${__("Save Current Search")}</a>
+            <a class="dropdown-item saved-searches__new" href="#"><i class="fa fa-plus"></i> ${__(
+              "Save Current Search",
+            )}</a>
           </div>
         </div>
       </div>`;
@@ -36,15 +40,26 @@
   }
 
   function bindEvents() {
-    state.menu.find(".saved-searches__new").on("click", (e) => { e.preventDefault(); saveCurrentSearch(); });
-    state.dropdown.on("click", ".saved-search-item", function() { applySearch($(this).data("id")); });
-    state.dropdown.on("click", ".saved-search-item__delete", function(e) { e.stopPropagation(); deleteSearch($(this).closest(".saved-search-item").data("id")); });
+    state.menu.find(".saved-searches__new").on("click", (e) => {
+      e.preventDefault();
+      saveCurrentSearch();
+    });
+    state.dropdown.on("click", ".saved-search-item", function () {
+      applySearch($(this).data("id"));
+    });
+    state.dropdown.on("click", ".saved-search-item__delete", function (e) {
+      e.stopPropagation();
+      deleteSearch($(this).closest(".saved-search-item").data("id"));
+    });
   }
 
   async function loadSearches() {
     showLoading();
     try {
-      const { message } = await frappe.call({ method: "desk_navbar_extended.api.saved_searches.list_saved_searches", freeze: false });
+      const { message } = await frappe.call({
+        method: "desk_navbar_extended.api.saved_searches.list_saved_searches",
+        freeze: false,
+      });
       state.searches = message || [];
       render();
     } catch (err) {
@@ -61,10 +76,14 @@
     }
     hideEmpty();
     let html = "";
-    state.searches.forEach(s => {
+    state.searches.forEach((s) => {
       html += `<a class="dropdown-item saved-search-item" data-id="${s.name}" href="#">`;
-      html += `<span class="saved-search-item__title">${frappe.utils.escape_html(s.search_name)}</span>`;
-      html += `<button class="btn btn-xs btn-link saved-search-item__delete" title="${__("Delete")}"><i class="fa fa-trash"></i></button>`;
+      html += `<span class="saved-search-item__title">${frappe.utils.escape_html(
+        s.search_name,
+      )}</span>`;
+      html += `<button class="btn btn-xs btn-link saved-search-item__delete" title="${__(
+        "Delete",
+      )}"><i class="fa fa-trash"></i></button>`;
       html += `</a>`;
     });
     state.dropdown.find(".saved-searches__list").html(html);
@@ -72,8 +91,15 @@
 
   async function saveCurrentSearch() {
     const query = $("#navbar-search input").val();
-    if (!query) { frappe.show_alert(__("No search query to save")); return; }
-    const name = await frappe.prompt({ label: __("Search Name"), fieldtype: "Data", reqd: 1 });
+    if (!query) {
+      frappe.show_alert(__("No search query to save"));
+      return;
+    }
+    const name = await frappe.prompt({
+      label: __("Search Name"),
+      fieldtype: "Data",
+      reqd: 1,
+    });
     if (!name) return;
     try {
       await frappe.call({
@@ -84,19 +110,26 @@
       loadSearches();
     } catch (err) {
       console.error("[Saved Searches] Save error:", err);
-      frappe.show_alert({ message: __("Failed to save search"), indicator: "red" });
+      frappe.show_alert({
+        message: __("Failed to save search"),
+        indicator: "red",
+      });
     }
   }
 
   function applySearch(id) {
-    const search = state.searches.find(s => s.name === id);
-    if (search) $("#navbar-search input").val(search.query_text).trigger("input");
+    const search = state.searches.find((s) => s.name === id);
+    if (search)
+      $("#navbar-search input").val(search.query_text).trigger("input");
   }
 
   async function deleteSearch(id) {
     if (!confirm(__("Delete this saved search?"))) return;
     try {
-      await frappe.call({ method: "desk_navbar_extended.api.saved_searches.delete_saved_search", args: { name: id } });
+      await frappe.call({
+        method: "desk_navbar_extended.api.saved_searches.delete_saved_search",
+        args: { name: id },
+      });
       frappe.show_alert({ message: __("Search deleted"), indicator: "green" });
       loadSearches();
     } catch (err) {
@@ -105,10 +138,20 @@
     }
   }
 
-  function showLoading() { state.dropdown.find(".saved-searches__loading").show(); state.dropdown.find(".saved-searches__list").hide(); }
-  function hideLoading() { state.dropdown.find(".saved-searches__loading").hide(); state.dropdown.find(".saved-searches__list").show(); }
-  function showEmpty() { state.dropdown.find(".saved-searches__empty").removeAttr("hidden"); }
-  function hideEmpty() { state.dropdown.find(".saved-searches__empty").attr("hidden", ""); }
+  function showLoading() {
+    state.dropdown.find(".saved-searches__loading").show();
+    state.dropdown.find(".saved-searches__list").hide();
+  }
+  function hideLoading() {
+    state.dropdown.find(".saved-searches__loading").hide();
+    state.dropdown.find(".saved-searches__list").show();
+  }
+  function showEmpty() {
+    state.dropdown.find(".saved-searches__empty").removeAttr("hidden");
+  }
+  function hideEmpty() {
+    state.dropdown.find(".saved-searches__empty").attr("hidden", "");
+  }
 
   frappe.desk_navbar_extended.saved_searches = { init };
   $(document).on("frappe.desk_navbar_extended.ready", init);

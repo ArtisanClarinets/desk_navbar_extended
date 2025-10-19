@@ -5,10 +5,12 @@ from __future__ import annotations
 import frappe
 from frappe.model.document import Document
 
+
 class DeskNavbarExtendedSettings(Document):
     """Desk Navbar Extended Settings doctype."""
 
     pass
+
 
 def get_settings_doc() -> frappe.model.document.Document:
     """Return the singleton settings document, creating it if missing."""
@@ -27,7 +29,7 @@ def get_enabled_features_for_user(user: str | None = None) -> dict[str, bool]:
     user = user or frappe.session.user
     settings = get_settings_doc()
     role_overrides = {}
-    
+
     if settings.enable_role_toggles:
         for row in settings.feature_roles:
             feature_key = (row.feature or "").strip().lower().replace(" ", "_")
@@ -65,4 +67,3 @@ def get_enabled_features_for_user(user: str | None = None) -> dict[str, bool]:
         "layout_bookmarks": is_enabled("enable_layout_bookmarks"),
         "usage_analytics": bool(settings.enable_usage_analytics),
     }
-

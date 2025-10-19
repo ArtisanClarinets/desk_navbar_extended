@@ -32,7 +32,9 @@
             <button class="btn btn-sm btn-link help-search__close">&times;</button>
           </div>
           <div class="help-search__search">
-            <input type="text" class="form-control" placeholder="${__("Search help articles...")}" />
+            <input type="text" class="form-control" placeholder="${__(
+              "Search help articles...",
+            )}" />
           </div>
           <div class="help-search__results"></div>
         </div>
@@ -45,7 +47,9 @@
   }
 
   function bindEvents() {
-    state.modal.find(".help-search__backdrop, .help-search__close").on("click", close);
+    state.modal
+      .find(".help-search__backdrop, .help-search__close")
+      .on("click", close);
     state.input.on("input", frappe.utils.debounce(search, 300));
   }
 
@@ -82,18 +86,22 @@
     let html = "";
     if (data.articles && data.articles.length) {
       html += `<div class="help-category"><h6>${__("Help Articles")}</h6>`;
-      data.articles.forEach(art => {
+      data.articles.forEach((art) => {
         html += `<a class="help-result" href="${art.route}">`;
-        html += `<i class="fa fa-book"></i> ${frappe.utils.escape_html(art.title)}`;
+        html += `<i class="fa fa-book"></i> ${frappe.utils.escape_html(
+          art.title,
+        )}`;
         html += `</a>`;
       });
       html += `</div>`;
     }
     if (data.external_docs && data.external_docs.length) {
       html += `<div class="help-category"><h6>${__("Documentation")}</h6>`;
-      data.external_docs.forEach(doc => {
+      data.external_docs.forEach((doc) => {
         html += `<a class="help-result" href="${doc.url}" target="_blank">`;
-        html += `<i class="fa fa-external-link"></i> ${frappe.utils.escape_html(doc.title)}`;
+        html += `<i class="fa fa-external-link"></i> ${frappe.utils.escape_html(
+          doc.title,
+        )}`;
         html += `</a>`;
       });
       html += `</div>`;

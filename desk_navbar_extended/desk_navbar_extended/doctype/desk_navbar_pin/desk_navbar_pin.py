@@ -21,9 +21,12 @@ class DeskNavbarPin(Document):
 
         # Set default sequence if not provided
         if self.sequence is None:
-            max_seq = frappe.db.get_value(
-                "Desk Navbar Pin",
-                {"owner": frappe.session.user},
-                "MAX(sequence)",
-            ) or 0
+            max_seq = (
+                frappe.db.get_value(
+                    "Desk Navbar Pin",
+                    {"owner": frappe.session.user},
+                    "MAX(sequence)",
+                )
+                or 0
+            )
             self.sequence = max_seq + 1

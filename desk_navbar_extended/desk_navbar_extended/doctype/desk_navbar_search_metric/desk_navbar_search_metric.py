@@ -18,4 +18,3 @@ class DeskNavbarSearchMetric(Document):
             self.error_message = self.error_message[:140]
         actor = frappe.session.user or "Guest"
         self.actor_hash = sha256(actor.encode()).hexdigest()
-

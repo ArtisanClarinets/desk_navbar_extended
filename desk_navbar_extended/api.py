@@ -22,8 +22,27 @@ from desk_navbar_extended.desk_navbar_extended.doctype.desk_navbar_extended_sett
 def get_settings() -> dict[str, Any]:
     """Return sanitized settings for the current session."""
 
-    doc = get_settings_doc()
-    features = get_enabled_features_for_user()
+    try:
+        doc = get_settings_doc()
+        features = get_enabled_features_for_user()
+    except Exception as e:
+        frappe.logger("desk_navbar_extended").error(
+            "Failed to fetch settings", extra={"error": str(e), "user": frappe.session.user}
+        )
+        # Return minimal safe defaults to prevent total failure
+        return {
+            "features": {"clock": False, "usage_analytics": False},
+            "clock": {
+                "time_format": "12h",
+                "show_calendar": False,
+                "timezone_event_limit": 3,
+                "time_zones": [],
+            },
+            "awesomebar": {"default_width": 560, "mobile_collapse": True},
+            "quick_create": {"doctypes": ""},
+            "kpi": {"refresh_interval": 300},
+        }
+
     timezones = [
         {
             "label": row.city_label,

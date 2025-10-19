@@ -16,7 +16,7 @@
       "fieldname": "feature",
       "fieldtype": "Select",
       "label": "Feature",
-      "options": "clock\nvoice_search\nwide_awesomebar"
+      "options": "clock\nvoice_search\nwide_awesomebar\nsmart_filters\nsaved_searches\nquick_create\npins\ngrouped_history\ncommand_palette\ndensity_toggle\nnotifications_center\nkpi_widgets\ntimezone_switcher\nvoice_actions\nhelp_search\nlayout_bookmarks"
     },
     {
       "fieldname": "role",

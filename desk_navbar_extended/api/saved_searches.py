@@ -54,7 +54,7 @@ def list_saved_searches() -> list[dict[str, Any]]:
                 sanitized["filters"] = {}
         else:
             sanitized["filters"] = {}
-        
+
         all_searches.append(sanitized)
 
     return all_searches
@@ -109,7 +109,7 @@ def update_saved_search(name: str, payload: str | dict[str, Any]) -> dict[str, A
         data = payload
 
     doc = frappe.get_doc("Desk Navbar Saved Search", name)
-    
+
     # Check permissions
     if doc.owner != frappe.session.user and "System Manager" not in frappe.get_roles():
         frappe.throw(_("Insufficient permissions"), frappe.PermissionError)
@@ -145,11 +145,11 @@ def delete_saved_search(name: str) -> dict[str, str]:
         frappe.throw(_("Saved searches feature is disabled"), frappe.PermissionError)
 
     doc = frappe.get_doc("Desk Navbar Saved Search", name)
-    
+
     # Check permissions
     if doc.owner != frappe.session.user and "System Manager" not in frappe.get_roles():
         frappe.throw(_("Insufficient permissions"), frappe.PermissionError)
 
     frappe.delete_doc("Desk Navbar Saved Search", name)
-    
+
     return {"status": "deleted", "name": name}

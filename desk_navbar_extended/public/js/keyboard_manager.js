@@ -22,16 +22,20 @@
     const html = Object.entries(shortcuts)
       .map(
         ([key, { description }]) =>
-          `<tr><td><kbd>${key}</kbd></td><td>${__(description)}</td></tr>`
+          `<tr><td><kbd>${key}</kbd></td><td>${__(description)}</td></tr>`,
       )
       .join("");
     frappe.msgprint({
       title: __("Keyboard Shortcuts"),
-      message:
-        `<table class="table table-bordered"><thead><tr><th>Shortcut</th><th>Action</th></tr></thead><tbody>${html}</tbody></table>`,
+      message: `<table class="table table-bordered"><thead><tr><th>Shortcut</th><th>Action</th></tr></thead><tbody>${html}</tbody></table>`,
     });
   }
 
-  frappe.desk_navbar_extended.keyboard_manager = { init, register, unregister, showHelp };
+  frappe.desk_navbar_extended.keyboard_manager = {
+    init,
+    register,
+    unregister,
+    showHelp,
+  };
   $(document).on("frappe.desk_navbar_extended.ready", init);
 })();

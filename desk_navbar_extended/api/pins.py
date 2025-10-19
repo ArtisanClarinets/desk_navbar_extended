@@ -75,13 +75,13 @@ def delete_pin(name: str) -> dict[str, str]:
         frappe.throw(_("Pins feature is disabled"), frappe.PermissionError)
 
     doc = frappe.get_doc("Desk Navbar Pin", name)
-    
+
     # Check ownership
     if doc.owner != frappe.session.user:
         frappe.throw(_("Insufficient permissions"), frappe.PermissionError)
 
     frappe.delete_doc("Desk Navbar Pin", name)
-    
+
     return {"status": "deleted", "name": name}
 
 
@@ -105,12 +105,12 @@ def reorder_pins(payload: str | dict[str, Any]) -> dict[str, str]:
     for pin_data in pins_data:
         name = pin_data.get("name")
         sequence = pin_data.get("sequence")
-        
+
         if not name or sequence is None:
             continue
 
         doc = frappe.get_doc("Desk Navbar Pin", name)
-        
+
         # Check ownership
         if doc.owner != frappe.session.user:
             continue

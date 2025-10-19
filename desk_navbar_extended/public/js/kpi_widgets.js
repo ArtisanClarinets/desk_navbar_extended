@@ -22,7 +22,10 @@
 
   async function loadKPIs() {
     try {
-      const { message } = await frappe.call({ method: "desk_navbar_extended.api.kpi.get_kpi_data", freeze: false });
+      const { message } = await frappe.call({
+        method: "desk_navbar_extended.api.kpi.get_kpi_data",
+        freeze: false,
+      });
       state.kpis = message || [];
       render();
     } catch (err) {
@@ -32,23 +35,26 @@
 
   function render() {
     let html = "";
-    state.kpis.forEach(kpi => {
-      html += `<div class="kpi-widget" data-route="${kpi.route || ''}">`;
-      html += `<div class="kpi-widget__icon"><i class="${kpi.icon || 'fa fa-bar-chart'}"></i></div>`;
+    state.kpis.forEach((kpi) => {
+      html += `<div class="kpi-widget" data-route="${kpi.route || ""}">`;
+      html += `<div class="kpi-widget__icon"><i class="${
+        kpi.icon || "fa fa-bar-chart"
+      }"></i></div>`;
       html += `<div class="kpi-widget__content">`;
       html += `<div class="kpi-widget__value">${kpi.value}</div>`;
       html += `<div class="kpi-widget__label">${__(kpi.label)}</div>`;
       html += `</div></div>`;
     });
     state.container.html(html);
-    state.container.find(".kpi-widget").on("click", function() {
+    state.container.find(".kpi-widget").on("click", function () {
       const route = $(this).data("route");
       if (route) frappe.set_route(route);
     });
   }
 
   function startAutoRefresh() {
-    const interval = frappe.desk_navbar_extended?.settings?.kpi_refresh_interval || 300;
+    const interval =
+      frappe.desk_navbar_extended?.settings?.kpi_refresh_interval || 300;
     state.refreshInterval = setInterval(loadKPIs, interval * 1000);
   }
 

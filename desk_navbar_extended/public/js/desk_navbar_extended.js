@@ -91,7 +91,10 @@
       return `${String(hours24).padStart(2, "0")}:${minutes}:${seconds}`;
     }
     const suffix = hours24 >= 12 ? "PM" : "AM";
-    return `${String(hours12).padStart(2, "0")}:${minutes}:${seconds} ${suffix}`;
+    return `${String(hours12).padStart(
+      2,
+      "0",
+    )}:${minutes}:${seconds} ${suffix}`;
   }
 
   function buildClockMarkup(snapshot) {
@@ -176,7 +179,11 @@
   }
 
   async function fetchTimezoneSnapshot(force = false) {
-    if (!force && state.timezoneSnapshot && Date.now() - state.timezoneSnapshot.syncTime < TIMEZONE_CACHE_TTL) {
+    if (
+      !force &&
+      state.timezoneSnapshot &&
+      Date.now() - state.timezoneSnapshot.syncTime < TIMEZONE_CACHE_TTL
+    ) {
       return state.timezoneSnapshot;
     }
 
@@ -200,7 +207,9 @@
   }
 
   function deserializeTimezoneSnapshot(payload) {
-    const fetchedAt = payload.fetched_at ? Date.parse(payload.fetched_at) : Date.now();
+    const fetchedAt = payload.fetched_at
+      ? Date.parse(payload.fetched_at)
+      : Date.now();
     return {
       syncTime: fetchedAt,
       zones: (payload.zones || []).map((zone) => ({
@@ -231,16 +240,18 @@
       return;
     }
     if (attempts > 20) return;
-    window.requestAnimationFrame(() => whenClockActionAvailable(callback, attempts + 1));
+    window.requestAnimationFrame(() =>
+      whenClockActionAvailable(callback, attempts + 1),
+    );
   }
 
   async function init() {
     const settings = await fetchSettings();
-    
+
     // Store settings globally for new modules
     frappe.desk_navbar_extended = frappe.desk_navbar_extended || {};
     frappe.desk_navbar_extended.settings = settings;
-    
+
     // Initialize existing features
     if (settings.features.clock) {
       whenClockActionAvailable(() => {
@@ -250,10 +261,13 @@
     if (settings.features.voice_search && window.desk_navbar_extended?.voice) {
       window.desk_navbar_extended.voice.init(settings);
     }
-    if (settings.features.wide_awesomebar && window.desk_navbar_extended?.awesomebar) {
+    if (
+      settings.features.wide_awesomebar &&
+      window.desk_navbar_extended?.awesomebar
+    ) {
       window.desk_navbar_extended.awesomebar.init(settings);
     }
-    
+
     // Emit ready event for new Phase 2 modules
     $(document).trigger("frappe.desk_navbar_extended.ready");
   }

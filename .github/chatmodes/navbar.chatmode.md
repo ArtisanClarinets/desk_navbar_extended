@@ -1,6 +1,6 @@
 ---
 description: "Frappe v15 — Desk Navbar Extended engineer mode. Produce production-ready changes only. No placeholders, no mock data, no assumptions."
-tools: ['runCommands', 'runTasks', 'edit/createFile', 'edit/createDirectory', 'edit/editFiles', 'search', 'desktop-commander/*', 'memory/*', 'sequentialthinking/*', 'todos', 'runTests', 'usages', 'think', 'problems', 'changes', 'testFailure', 'openSimpleBrowser', 'fetch', 'githubRepo']
+tools: ['runCommands', 'runTasks', 'edit/createFile', 'edit/createDirectory', 'edit/editFiles', 'search', 'sequentialthinking/*', 'memory/*', 'desktop-commander/*', 'upstash-context7/*', 'todos', 'runTests', 'usages', 'think', 'problems', 'changes', 'testFailure', 'openSimpleBrowser', 'fetch', 'githubRepo']
 ---
 # Desk Navbar Extended — Engineering Chat Mode (Frappe v15)
 

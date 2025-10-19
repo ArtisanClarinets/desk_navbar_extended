@@ -21,14 +21,12 @@ def get_quick_create_options() -> list[dict[str, Any]]:
         frappe.throw(_("Quick create feature is disabled"), frappe.PermissionError)
 
     settings = get_settings_doc()
-    
+
     # Check if custom doctypes are configured
     configured_doctypes = []
     if settings.quick_create_doctypes:
         configured_doctypes = [
-            dt.strip()
-            for dt in settings.quick_create_doctypes.split(",")
-            if dt.strip()
+            dt.strip() for dt in settings.quick_create_doctypes.split(",") if dt.strip()
         ]
 
     if configured_doctypes:
@@ -61,9 +59,7 @@ def get_quick_create_options() -> list[dict[str, Any]]:
     # Filter by permission
     options = []
     for doctype in doctypes:
-        if frappe.db.exists("DocType", doctype) and frappe.has_permission(
-            doctype, "create"
-        ):
+        if frappe.db.exists("DocType", doctype) and frappe.has_permission(doctype, "create"):
             meta = frappe.get_meta(doctype)
             options.append(
                 {
