@@ -134,6 +134,12 @@ doc_events = {
     }
 }
 
+doc_events = {
+    "User": {
+        "on_login": "desk_navbar_extended.api.log_doctype_presence"
+    }
+}
+
 # Scheduled Tasks
 # ---------------
 

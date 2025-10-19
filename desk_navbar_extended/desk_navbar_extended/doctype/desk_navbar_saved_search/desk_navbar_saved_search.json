@@ -93,16 +93,12 @@
   "permissions": [
     {
       "role": "All",
-      "if_owner": 1,
-      "select": 1,
-      "read": 1,
-      "write": 1,
       "create": 1,
-      "delete": 1
+      "read": 1,
+      "write": 1
     },
     {
       "role": "System Manager",
-      "select": 1,
       "read": 1,
       "write": 1,
       "create": 1,
