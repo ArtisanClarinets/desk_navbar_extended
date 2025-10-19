@@ -4,7 +4,6 @@ Phase 2 Frontend Generator
 Generates all production-ready frontend modules for desk_navbar_extended v2.0
 """
 
-import os
 from pathlib import Path
 
 BASE_DIR = Path(__file__).parent
@@ -996,13 +995,13 @@ DENSITY_TOGGLE = """/**
     updateIcon();
   }
 
-  function applyDensity() {
-    $("body").removeClass("density-comfortable density-compact").addClass(\`density-\${state.density}\`);
+    function applyDensity() {
+    $("body").removeClass("density-comfortable density-compact").addClass(`density-${state.density}`);
   }
 
   function updateIcon() {
-    const icon = state.density === "compact" ? "fa-expand" : "fa-compress";
-    state.toggle.find("i").attr("class", \`fa \${icon}\`);
+  const icon = state.density === "compact" ? "fa-expand" : "fa-compress";
+  state.toggle.find("i").attr("class", `fa ${icon}`);
   }
 
   frappe.desk_navbar_extended.density_toggle = { init };
@@ -1035,11 +1034,11 @@ KEYBOARD_MANAGER = """/**
 
   function showHelp() {
     const html = Object.entries(shortcuts).map(([key, { description }]) =>
-      \`<tr><td><kbd>\${key}</kbd></td><td>\${__(description)}</td></tr>\`
+      `<tr><td><kbd>${key}</kbd></td><td>${__(description)}</td></tr>`
     ).join("");
     frappe.msgprint({
       title: __("Keyboard Shortcuts"),
-      message: \`<table class="table table-bordered"><thead><tr><th>Shortcut</th><th>Action</th></tr></thead><tbody>\${html}</tbody></table>\`,
+      message: `<table class="table table-bordered"><thead><tr><th>Shortcut</th><th>Action</th></tr></thead><tbody>${html}</tbody></table>`,
     });
   }
 
@@ -1845,11 +1844,11 @@ body.command-palette-open {
 # Write CSS file
 css_path = CSS_DIR / "desk_navbar_extended.css"
 css_path.write_text(CSS_CONTENT)
-print(f"\\n✓ Created desk_navbar_extended.css ({len(CSS_CONTENT)} bytes)")
-print(f"\\n🎉 All Phase 2 frontend assets generated successfully!")
-print(f"   - {len(files)} JavaScript modules")
-print(f"   - 1 comprehensive CSS file")
-print(f"\\nNext steps:")
-print(f"   1. Update desk_navbar_extended.js to initialize all modules")
-print(f"   2. Update hooks.py to register all assets")
-print(f"   3. Run: bench build --app desk_navbar_extended")
+print("\n✓ Created desk_navbar_extended.css ({} bytes)".format(len(CSS_CONTENT)))
+print("\n🎉 All Phase 2 frontend assets generated successfully!")
+print("   - {} JavaScript modules".format(len(files)))
+print("   - 1 comprehensive CSS file")
+print("\nNext steps:")
+print("   1. Update desk_navbar_extended.js to initialize all modules")
+print("   2. Update hooks.py to register all assets")
+print("   3. Run: bench build --app desk_navbar_extended")

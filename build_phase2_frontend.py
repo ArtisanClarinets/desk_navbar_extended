@@ -28,3 +28,14 @@ COMMAND_PALETTE_JS = '''/**
 			if (!frappe.desk_navbar_extended?.settings?.enable_command_palette) return;
 			this.setupKeyboardShortcuts();
 			this.buildModal();
+
+'''
+
+if __name__ == "__main__":
+	# Minimal writer to make this script syntactically valid and useful
+	try:
+		out = BASE_DIR / "command_palette.js"
+		out.write_text(COMMAND_PALETTE_JS)
+		print(f"Wrote {out}")
+	except Exception as e:
+		print("Could not write command_palette.js:", e)

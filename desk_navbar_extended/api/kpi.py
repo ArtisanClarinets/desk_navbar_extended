@@ -6,7 +6,7 @@ from typing import Any
 
 import frappe
 from frappe import _
-from frappe.utils import cint, flt
+from frappe.utils import flt
 
 from desk_navbar_extended.desk_navbar_extended.doctype.desk_navbar_extended_settings.desk_navbar_extended_settings import (
     get_enabled_features_for_user,

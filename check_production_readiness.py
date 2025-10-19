@@ -9,7 +9,6 @@ it's production-ready. Run this before deploying to production.
 from __future__ import annotations
 
 import json
-import os
 import sys
 from pathlib import Path
 
@@ -19,9 +18,7 @@ sys.path.insert(0, str(app_root))
 
 try:
     import frappe
-    from frappe.utils import cint
     from desk_navbar_extended.desk_navbar_extended.doctype.desk_navbar_extended_settings.desk_navbar_extended_settings import (
-        get_enabled_features_for_user,
         get_settings_doc,
     )
     FRAPPE_AVAILABLE = True

@@ -2,14 +2,12 @@
 
 from __future__ import annotations
 
-import json
-from datetime import date, datetime
 from typing import Any
 
 import frappe
 from frappe import _
 from frappe.desk.search import search_link
-from frappe.utils import cint, get_datetime, now_datetime
+from frappe.utils import get_datetime, now_datetime, cint
 
 from desk_navbar_extended.desk_navbar_extended.doctype.desk_navbar_extended_settings.desk_navbar_extended_settings import (
     get_enabled_features_for_user,
