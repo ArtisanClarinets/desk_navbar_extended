@@ -30,7 +30,7 @@ def execute() -> None:
     except Exception as e:
         frappe.logger("desk_navbar_extended").error(
             f"Failed to create settings singleton: {e}",
-            exc_info=True
+            exc_info=True,
         )
         # Re-raise to fail the patch if critical
         raise
