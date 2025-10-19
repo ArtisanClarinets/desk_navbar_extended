@@ -17,9 +17,11 @@ def get_data():
                     "description": "Monitor awesomebar usage telemetry.",
                 },
                 {
-                    "type": "doctype",
-                    "name": "Desk Navbar Extended Settings",
+                    "type": "link",
                     "label": "Configuration",
+                    "link_type": "Form",
+                    "link_to": "Desk Navbar Extended Settings",
+                    "dependencies": ["Desk Navbar Extended Settings"],
                 },
             ],
         }
