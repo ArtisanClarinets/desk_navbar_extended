@@ -46,7 +46,7 @@
     state.pins.forEach((pin) => {
       html += `<div class="pin-item" data-name="${pin.name}">`;
       html += `<a href="${pin.route}" class="pin-item__link">`;
-      html += `<i class="${pin.icon_class || "fa fa-star"}"></i>`;
+      html += `<i class="${pin.icon || "fa fa-star"}"></i>`;
       html += `<span>${frappe.utils.escape_html(pin.label)}</span>`;
       html += `</a>`;
       html += `<button class="pin-item__delete" title="${__(
@@ -78,18 +78,34 @@
           fieldtype: "Data",
         },
         {
-          label: __("Icon Class"),
-          fieldname: "icon_class",
+          label: __("Custom Route"),
+          fieldname: "route",
+          fieldtype: "Data",
+          description: __(
+            "Optional: override the destination URL (e.g. /app/sales-order/SAL-0001).",
+          ),
+        },
+        {
+          label: __("Icon"),
+          fieldname: "icon",
           fieldtype: "Data",
           default: "fa fa-star",
         },
       ],
       primary_action_label: __("Add"),
       primary_action: async (values) => {
+        const payload = buildPinPayload(values);
+        if (!payload) {
+          frappe.show_alert({
+            message: __("Please provide a label and destination for the pin."),
+            indicator: "orange",
+          });
+          return;
+        }
         try {
           await frappe.call({
             method: "desk_navbar_extended.api.pins.create_pin",
-            args: values,
+            args: { payload },
           });
           frappe.show_alert({ message: __("Pin added"), indicator: "green" });
           d.hide();
@@ -122,6 +138,37 @@
         indicator: "red",
       });
     }
+  }
+
+  function buildPinPayload(values) {
+    const label = values.label?.trim();
+    const icon = values.icon?.trim() || "fa fa-star";
+    const route = buildRoute(values);
+
+    if (!label || !route) {
+      return null;
+    }
+
+    return {
+      label,
+      route,
+      icon,
+    };
+  }
+
+  function buildRoute(values) {
+    if (values.route && values.route.trim()) return values.route.trim();
+    if (!values.doctype) return null;
+
+    const slug =
+      typeof frappe.router?.slug === "function"
+        ? frappe.router.slug(values.doctype)
+        : values.doctype.toLowerCase().replace(/\s+/g, "-");
+
+    if (values.doc_name && values.doc_name.trim()) {
+      return `/app/${slug}/${encodeURIComponent(values.doc_name.trim())}`;
+    }
+    return `/app/${slug}`;
   }
 
   frappe.desk_navbar_extended.pins = { init };

@@ -7,7 +7,8 @@
   let state = {
     isOpen: false,
     query: "",
-    results: [],
+    allResults: [],
+    filteredResults: [],
     selectedIdx: 0,
     modal: null,
     input: null,
@@ -118,8 +119,10 @@
           "desk_navbar_extended.api.command_palette.get_command_palette_sources",
         freeze: false,
       });
-      state.results = message?.all_results || [];
-      render(state.results);
+      state.allResults = buildResults(message);
+      state.filteredResults = state.allResults;
+      state.selectedIdx = 0;
+      render();
     } catch (err) {
       console.error("[Command Palette] Load error:", err);
       showEmpty();
@@ -129,21 +132,24 @@
   function handleInput() {
     state.query = state.input.val().toLowerCase().trim();
     if (!state.query) {
-      render(state.results);
+      state.filteredResults = state.allResults;
+      state.selectedIdx = 0;
+      render();
       return;
     }
-    const filtered = state.results.filter(
+    state.filteredResults = state.allResults.filter(
       (r) =>
         (r.title || "").toLowerCase().includes(state.query) ||
         (r.description || "").toLowerCase().includes(state.query) ||
         (r.category || "").toLowerCase().includes(state.query),
     );
     state.selectedIdx = 0;
-    render(filtered);
+    render();
   }
 
-  function render(items) {
+  function render() {
     hideLoading();
+    const items = state.filteredResults;
     if (!items || items.length === 0) {
       showEmpty();
       return;
@@ -166,8 +172,8 @@
           item.idx
         }" role="option" aria-selected="${item.idx === state.selectedIdx}">`;
         html += `<div class="cmd-palette__item-icon">${
-          item.icon_class
-            ? `<i class="${item.icon_class}"></i>`
+          item.icon
+            ? `<i class="${item.icon}"></i>`
             : item.doctype
             ? item.doctype.charAt(0)
             : "•"
@@ -187,7 +193,7 @@
   }
 
   function navigate(dir) {
-    const max = state.results.length - 1;
+    const max = state.filteredResults.length - 1;
     state.selectedIdx = Math.max(0, Math.min(max, state.selectedIdx + dir));
     updateSelection();
   }
@@ -214,15 +220,59 @@
   }
 
   function selectIdx(idx) {
-    const result = state.results[idx];
+    const result = state.filteredResults[idx];
     if (!result) return;
     close();
     if (result.route) frappe.set_route(result.route);
-    else if (result.doctype && result.name)
+    else if (result.type === "saved_search" && result.data) {
+      frappe.desk_navbar_extended.saved_searches?.applySearch(result.data.name);
+    } else if (result.doctype && result.name)
       frappe.set_route("Form", result.doctype, result.name);
     else if (result.doctype) frappe.set_route("List", result.doctype);
-    else if (result.action && typeof result.action === "function")
-      result.action();
+  }
+
+  function buildResults(message) {
+    if (!message || typeof message !== "object") return [];
+    const mapping = {
+      doctypes: __("Doctypes"),
+      saved_searches: __("Saved Searches"),
+      pins: __("Pins"),
+      recent: __("Recent"),
+      quick_create: __("Quick Create"),
+      help: __("Help"),
+    };
+
+    const results = [];
+    Object.entries(message).forEach(([key, items]) => {
+      if (!Array.isArray(items)) return;
+      const category = mapping[key] || toTitle(key);
+      items.forEach((item) => {
+        results.push({
+          ...item,
+          category,
+          title: item.title || item.label || item.value || "",
+          description: item.description,
+          doctype: item.doctype || (item.type === "doctype" ? item.value : item.doctype),
+          name:
+            item.name ||
+            (item.type === "saved_search" ? item.value : item.name) ||
+            item.docname,
+          icon: item.icon || item.icon_class || null,
+          route: item.route || null,
+        });
+      });
+    });
+
+    return results;
+  }
+
+  function toTitle(value) {
+    return (value || "")
+      .replace(/[_\-]+/g, " ")
+      .split(" ")
+      .filter(Boolean)
+      .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+      .join(" ") || "Other";
   }
 
   function showLoading() {

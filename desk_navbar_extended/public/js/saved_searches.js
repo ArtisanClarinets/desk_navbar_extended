@@ -60,7 +60,7 @@
         method: "desk_navbar_extended.api.saved_searches.list_saved_searches",
         freeze: false,
       });
-      state.searches = message || [];
+      state.searches = Array.isArray(message) ? message : [];
       render();
     } catch (err) {
       console.error("[Saved Searches] Load error:", err);
@@ -79,8 +79,12 @@
     state.searches.forEach((s) => {
       html += `<a class="dropdown-item saved-search-item" data-id="${s.name}" href="#">`;
       html += `<span class="saved-search-item__title">${frappe.utils.escape_html(
-        s.search_name,
+        s.title,
       )}</span>`;
+      if (s.doctype_filter)
+        html += `<span class="saved-search-item__doctype text-muted">${frappe.utils.escape_html(
+          s.doctype_filter,
+        )}</span>`;
       html += `<button class="btn btn-xs btn-link saved-search-item__delete" title="${__(
         "Delete",
       )}"><i class="fa fa-trash"></i></button>`;
@@ -101,10 +105,14 @@
       reqd: 1,
     });
     if (!name) return;
+    const payload = {
+      title: name,
+      query,
+    };
     try {
       await frappe.call({
         method: "desk_navbar_extended.api.saved_searches.create_saved_search",
-        args: { search_name: name, query_text: query },
+        args: { payload },
       });
       frappe.show_alert({ message: __("Search saved"), indicator: "green" });
       loadSearches();
@@ -119,8 +127,17 @@
 
   function applySearch(id) {
     const search = state.searches.find((s) => s.name === id);
-    if (search)
-      $("#navbar-search input").val(search.query_text).trigger("input");
+    if (!search) return;
+
+    $("#navbar-search input").val(search.query).trigger("input");
+
+    if (search.filters && frappe.desk_navbar_extended?.search_filters) {
+      try {
+        frappe.desk_navbar_extended.search_filters.applyFilters(search);
+      } catch (err) {
+        console.warn("[Saved Searches] Unable to apply advanced filters", err);
+      }
+    }
   }
 
   async function deleteSearch(id) {
@@ -153,6 +170,6 @@
     state.dropdown.find(".saved-searches__empty").attr("hidden", "");
   }
 
-  frappe.desk_navbar_extended.saved_searches = { init };
+  frappe.desk_navbar_extended.saved_searches = { init, applySearch };
   $(document).on("frappe.desk_navbar_extended.ready", init);
 })();

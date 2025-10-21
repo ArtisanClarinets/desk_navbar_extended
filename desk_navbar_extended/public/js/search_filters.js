@@ -7,6 +7,7 @@
   let state = {
     filters: { doctype: null, owner: null, date_from: null, date_to: null },
     filterBar: null,
+    originalSearch: null,
   };
 
   function init() {
@@ -89,20 +90,27 @@
       date_from: null,
       date_to: null,
     };
+    updateFilters();
   }
 
   function hookIntoAwesomebar() {
-    const originalSearch = frappe.search.search;
-    frappe.search.search = function (query, doctype, ...args) {
+    const searchUtils = frappe.search?.utils;
+    if (!searchUtils?.search || state.originalSearch) return;
+
+    state.originalSearch = searchUtils.search.bind(searchUtils);
+
+    searchUtils.search = function (query, doctype, ...args) {
       if (
         state.filters.doctype ||
         state.filters.owner ||
         state.filters.date_from ||
         state.filters.date_to
       ) {
-        return customSearch(query);
+        return customSearch(query).catch(() =>
+          state.originalSearch.call(searchUtils, query, doctype, ...args),
+        );
       }
-      return originalSearch.call(this, query, doctype, ...args);
+      return state.originalSearch.call(searchUtils, query, doctype, ...args);
     };
   }
 
@@ -120,13 +128,33 @@
         },
         freeze: false,
       });
-      return message || [];
+      return message?.results || [];
     } catch (err) {
       console.error("[Search Filters] Search error:", err);
       return [];
     }
   }
 
-  frappe.desk_navbar_extended.search_filters = { init };
+  function applyFilters(search) {
+    if (!state.filterBar) return;
+    const filters = search.filters || {};
+
+    state.filterBar
+      .find(".search-filter--doctype select")
+      .val(search.doctype_filter || "");
+    state.filterBar
+      .find(".search-filter--owner input")
+      .val(filters.owner || "");
+    state.filterBar
+      .find(".search-filter__date-from")
+      .val(filters.date_from || "");
+    state.filterBar
+      .find(".search-filter__date-to")
+      .val(filters.date_to || "");
+
+    updateFilters();
+  }
+
+  frappe.desk_navbar_extended.search_filters = { init, applyFilters };
   $(document).on("frappe.desk_navbar_extended.ready", init);
 })();

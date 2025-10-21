@@ -4,7 +4,7 @@
 (() => {
   frappe.provide("desk_navbar_extended.notifications_center");
 
-  let state = { notifications: [], panel: null, badge: null };
+  let state = { notifications: [], panel: null, badge: null, unreadCount: 0 };
 
   function init() {
     if (!frappe.desk_navbar_extended?.settings?.enable_notifications_center)
@@ -49,7 +49,11 @@
         method: "desk_navbar_extended.api.notifications.get_notifications",
         freeze: false,
       });
-      state.notifications = message || [];
+      state.notifications = Array.isArray(message?.notifications)
+        ? message.notifications
+        : [];
+      const unread = Number.parseInt(message?.unread_count, 10);
+      state.unreadCount = Number.isFinite(unread) ? unread : 0;
       render();
       updateBadge();
     } catch (err) {
@@ -91,7 +95,10 @@
   }
 
   function updateBadge() {
-    const unread = state.notifications.filter((n) => !n.read).length;
+    const unread =
+      typeof state.unreadCount === "number"
+        ? state.unreadCount
+        : state.notifications.filter((n) => !n.read).length;
     if (unread > 0) {
       state.badge.text(unread).removeAttr("hidden");
     } else {
@@ -101,12 +108,15 @@
 
   async function markRead(name) {
     try {
-      await frappe.call({
+      const { message } = await frappe.call({
         method: "desk_navbar_extended.api.notifications.mark_as_read",
-        args: { name },
+        args: { payload: { names: [name] } },
         freeze: false,
       });
-      loadNotifications();
+      if (message?.count) {
+        state.unreadCount = Math.max((state.unreadCount || 1) - message.count, 0);
+      }
+      await loadNotifications();
     } catch (err) {
       console.error("[Notifications] Mark read error:", err);
     }
