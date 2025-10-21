@@ -1,31 +1,15 @@
-"""API module for Desk Navbar Extended - exposes main functions."""
+"""Public API exports for Desk Navbar Extended."""
 
-import sys
-from pathlib import Path
+from desk_navbar_extended import root_api as _root_api
 
-# Ensure parent can be imported
-parent_path = str(Path(__file__).parent.parent)
-if parent_path not in sys.path:
-    sys.path.insert(0, parent_path)
+get_settings = _root_api.get_settings
+get_timezone_overview = _root_api.get_timezone_overview
+transcribe_audio = _root_api.transcribe_audio
+process_transcription = _root_api.process_transcription
+log_search_metrics = _root_api.log_search_metrics
+log_doctype_presence = _root_api.log_doctype_presence
 
-# Import main API functions from parent api.py module
-# We need to reference it explicitly since we're shadowing it
-import importlib.util
-
-api_module_path = Path(__file__).parent.parent / "api.py"
-spec = importlib.util.spec_from_file_location("main_api", api_module_path)
-main_api = importlib.util.module_from_spec(spec)
-spec.loader.exec_module(main_api)
-
-# Re-export main API functions for backward compatibility
-get_settings = main_api.get_settings
-get_timezone_overview = main_api.get_timezone_overview
-transcribe_audio = main_api.transcribe_audio
-process_transcription = main_api.process_transcription
-log_search_metrics = main_api.log_search_metrics
-
-# Sub-modules available for import
-from desk_navbar_extended.api import (  # noqa: F401, E402
+from . import (  # noqa: F401
     command_palette,
     help,
     history,
@@ -38,20 +22,19 @@ from desk_navbar_extended.api import (  # noqa: F401, E402
 )
 
 __all__ = [
-    # Main API functions
     "get_settings",
     "get_timezone_overview",
     "transcribe_audio",
     "process_transcription",
     "log_search_metrics",
-    # Sub-modules
-    "search_filters",
-    "saved_searches",
+    "log_doctype_presence",
+    "command_palette",
+    "help",
+    "history",
+    "kpi",
+    "notifications",
     "pins",
     "quick_create",
-    "command_palette",
-    "history",
-    "notifications",
-    "kpi",
-    "help",
+    "saved_searches",
+    "search_filters",
 ]

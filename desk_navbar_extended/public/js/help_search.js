@@ -76,37 +76,51 @@
         args: { query, limit: 10 },
         freeze: false,
       });
-      renderResults(message || {});
+      renderResults(Array.isArray(message) ? message : []);
     } catch (err) {
       console.error("[Help Search] Search error:", err);
     }
   }
 
-  function renderResults(data) {
+  function renderResults(items) {
+    if (!items.length) {
+      state.results.html(`<div class="help-empty">${__("No results found")}</div>`);
+      return;
+    }
+
+    const grouped = items.reduce((acc, item) => {
+      const type = item.type || "other";
+      acc[type] = acc[type] || [];
+      acc[type].push(item);
+      return acc;
+    }, {});
+
+    const labels = {
+      help_article: __("Help Articles"),
+      external_doc: __("Documentation"),
+      quick_link: __("Links"),
+      other: __("Suggestions"),
+    };
+
     let html = "";
-    if (data.articles && data.articles.length) {
-      html += `<div class="help-category"><h6>${__("Help Articles")}</h6>`;
-      data.articles.forEach((art) => {
-        html += `<a class="help-result" href="${art.route}">`;
-        html += `<i class="fa fa-book"></i> ${frappe.utils.escape_html(
-          art.title,
-        )}`;
+    Object.entries(grouped).forEach(([type, entries]) => {
+      html += `<div class="help-category"><h6>${labels[type] || labels.other}</h6>`;
+      entries.forEach((entry) => {
+        const isExternal = Boolean(entry.external);
+        const href = entry.route || entry.url || "#";
+        const icon = entry.icon || (isExternal ? "fa fa-external-link" : "fa fa-book");
+        const attrs = isExternal ? " target=\"_blank\" rel=\"noopener\"" : "";
+        html += `<a class="help-result" href="${href}"${attrs}>`;
+        html += `<i class="${icon}"></i> ${frappe.utils.escape_html(entry.title || "")}`;
+        if (entry.description)
+          html += `<div class="help-result__desc text-muted">${frappe.utils.escape_html(
+            entry.description,
+          )}</div>`;
         html += `</a>`;
       });
       html += `</div>`;
-    }
-    if (data.external_docs && data.external_docs.length) {
-      html += `<div class="help-category"><h6>${__("Documentation")}</h6>`;
-      data.external_docs.forEach((doc) => {
-        html += `<a class="help-result" href="${doc.url}" target="_blank">`;
-        html += `<i class="fa fa-external-link"></i> ${frappe.utils.escape_html(
-          doc.title,
-        )}`;
-        html += `</a>`;
-      });
-      html += `</div>`;
-    }
-    if (!html) html = `<div class="help-empty">${__("No results found")}</div>`;
+    });
+
     state.results.html(html);
   }
 

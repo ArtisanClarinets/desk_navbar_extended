@@ -1,17 +1,30 @@
-QUnit.module("Keyboard Manager", function () {
-  QUnit.test("keyboard manager module exists", function (assert) {
-    assert.ok(
-      frappe.desk_navbar_extended.keyboard_manager,
-      "Keyboard manager exists",
-    );
+QUnit.module("Keyboard Manager", function (hooks) {
+  hooks.beforeEach(function () {
+    frappe.desk_navbar_extended.keyboard_manager.init();
   });
 
-  QUnit.test("can register shortcut", function (assert) {
+  hooks.afterEach(function () {
+    frappe.desk_navbar_extended.keyboard_manager.unregister("Ctrl+Y");
+  });
+
+  QUnit.test("executes registered shortcut", function (assert) {
+    const done = assert.async();
+    let fired = false;
     frappe.desk_navbar_extended.keyboard_manager.register(
-      "Ctrl+T",
-      () => {},
-      "Test shortcut",
+      "Ctrl+Y",
+      () => {
+        fired = true;
+      },
+      "Demo action",
     );
-    assert.ok(true, "Shortcut registered");
+
+    $(document).trigger(
+      $.Event("keydown", { ctrlKey: true, key: "y", target: document.body }),
+    );
+
+    setTimeout(() => {
+      assert.ok(fired, "handler invoked");
+      done();
+    }, 20);
   });
 });

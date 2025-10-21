@@ -1,33 +1,68 @@
-QUnit.module("Command Palette", function () {
-  QUnit.test("initializes when feature enabled", function (assert) {
+QUnit.module("Command Palette", function (hooks) {
+  hooks.beforeEach(function () {
+    this.originalCall = frappe.call;
     frappe.desk_navbar_extended = {
       settings: { enable_command_palette: true },
+      command_palette: frappe.desk_navbar_extended.command_palette,
+      saved_searches: { applySearch: function (name) { this.last = name; } },
     };
-    assert.ok(
-      frappe.desk_navbar_extended.command_palette,
-      "Command palette module exists",
-    );
+    this.applyStub = frappe.desk_navbar_extended.saved_searches;
   });
 
-  QUnit.test("keyboard shortcut (Ctrl+K) opens palette", function (assert) {
+  hooks.afterEach(function () {
+    frappe.call = this.originalCall;
+    $(".cmd-palette").remove();
+  });
+
+  QUnit.test("aggregates sources and selects saved search", function (assert) {
     const done = assert.async();
+    const response = {
+      doctypes: [
+        {
+          type: "doctype",
+          label: "Task",
+          value: "Task",
+          icon: "fa fa-check",
+          route: "/app/task",
+        },
+      ],
+      saved_searches: [
+        {
+          type: "saved_search",
+          label: "My Search",
+          value: "SEARCH-1",
+          data: { name: "SEARCH-1" },
+        },
+      ],
+    };
+
+    frappe.call = () => Promise.resolve({ message: response });
+
+    frappe.desk_navbar_extended.command_palette.init();
     $(document).trigger($.Event("keydown", { ctrlKey: true, key: "k" }));
-    setTimeout(() => {
-      assert.ok($(".cmd-palette").length > 0, "Palette modal exists");
-      done();
-    }, 100);
-  });
 
-  QUnit.test("ESC key closes palette", function (assert) {
-    const done = assert.async();
-    $(document).trigger($.Event("keydown", { key: "Escape" }));
     setTimeout(() => {
-      assert.ok(
-        $(".cmd-palette").attr("hidden") !== undefined ||
-          !$(".cmd-palette").is(":visible"),
-        "Palette is hidden",
+      const categories = $(".cmd-palette__category-label")
+        .map((_, el) => $(el).text().trim())
+        .get();
+      assert.deepEqual(
+        categories,
+        [__("Doctypes"), __("Saved Searches")],
+        "categories rendered",
       );
-      done();
-    }, 100);
+
+      $(".cmd-palette__item")
+        .last()
+        .trigger("click");
+
+      setTimeout(() => {
+        assert.strictEqual(
+          frappe.desk_navbar_extended.saved_searches.last,
+          "SEARCH-1",
+          "saved search applied on select",
+        );
+        done();
+      }, 50);
+    }, 50);
   });
 });

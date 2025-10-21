@@ -53,9 +53,15 @@
   }
 
   function startAutoRefresh() {
-    const interval =
-      frappe.desk_navbar_extended?.settings?.kpi_refresh_interval || 300;
-    state.refreshInterval = setInterval(loadKPIs, interval * 1000);
+    if (state.refreshInterval) {
+      clearInterval(state.refreshInterval);
+    }
+    const configured =
+      frappe.desk_navbar_extended?.settings?.kpi?.refresh_interval ??
+      frappe.desk_navbar_extended?.settings?.kpi_refresh_interval;
+    const interval = Number.parseInt(configured, 10);
+    const seconds = Number.isFinite(interval) && interval > 0 ? interval : 300;
+    state.refreshInterval = setInterval(loadKPIs, seconds * 1000);
   }
 
   frappe.desk_navbar_extended.kpi_widgets = { init };
