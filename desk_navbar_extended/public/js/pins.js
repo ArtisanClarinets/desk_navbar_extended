@@ -7,7 +7,7 @@
   let state = { pins: [], bar: null };
 
   function init() {
-    if (!frappe.desk_navbar_extended?.settings?.enable_pins) return;
+    if (!frappe.desk_navbar_extended?.settings?.features?.pins) return;
     buildPinBar();
     loadPins();
     console.log("[Pins] Ready");

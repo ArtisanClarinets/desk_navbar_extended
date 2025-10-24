@@ -7,7 +7,7 @@
   let state = { modal: null, input: null, results: null };
 
   function init() {
-    if (!frappe.desk_navbar_extended?.settings?.enable_help_search) return;
+    if (!frappe.desk_navbar_extended?.settings?.features?.help_search) return;
     buildModal();
     setupKeyboard();
     console.log("[Help Search] Ready");
