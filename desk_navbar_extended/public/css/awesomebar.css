@@ -42,6 +42,15 @@
   padding: 0.25rem 0;
 }
 
+.desk-navbar-extended-clock-container {
+  padding: 0.5rem 0.75rem;
+  min-width: 18rem;
+}
+
+.desk-navbar-extended-clock-container[hidden] {
+  display: none !important;
+}
+
 .desk-navbar-extended-clock__zone {
   display: grid;
   grid-template-columns: 1fr auto;

@@ -63,6 +63,34 @@ bench --site test_site run-tests --app desk_navbar_extended desk_navbar_extended
 
 For client-side assertions, include `desk_navbar_extended/public/js/tests/voice_search.test.js` in your QUnit bundle.
 
+### Post-Patch Actions
+
+1. Clear caches and rebuild assets:
+
+   ```bash
+   bench --site <yoursite> clear-cache
+   bench build --apps desk_navbar_extended
+   bench restart
+   ```
+
+2. Seed or re-seed the navbar action safely:
+
+   ```bash
+   bench --site <yoursite> execute "from desk_navbar_extended.setup import add_clock_navbar_item; add_clock_navbar_item()"
+   ```
+
+### Manual QA Checklist
+
+- Open Desk, expand the user menu, and click **Show Time** – the clock panel should appear or hide without closing the dropdown.
+- Leave the dropdown, wait a few minutes, reopen it – any visible clock panel should refresh automatically.
+- If voice search is enabled, clicking the microphone must no longer trigger 403/404 responses and should leave the UI stable if transcription is not configured.
+
+### Security / Compliance Checklist
+
+- All whitelisted endpoints disallow guest access and validate payload sizes and formats.
+- Sensitive operations log via `frappe.logger("desk_navbar_extended")` without exposing credentials.
+- Feature flags default to safe values through the singleton settings document.
+
 #### License
 
 MIT

@@ -184,6 +184,7 @@ def transcribe_audio(audio: str, filename: str | None = None) -> dict[str, Any]:
     return {"job_id": job.id}
 
 
+@frappe.whitelist(allow_guest=False)
 def process_transcription(audio: str, filename: str | None, user: str) -> None:
     """Placeholder background job that stores audio for later processing."""
 
