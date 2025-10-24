@@ -5,6 +5,7 @@
   const CLOCK_ACTION = "frappe.desk_navbar_extended.show_clock";
   const CLOCK_ATTR = "data-desk-nav-extended";
   const CLOCK_ATTR_VALUE = "clock";
+  const CLOCK_CONTAINER_CLASS = "desk-navbar-extended-clock-container";
   const SETTINGS_CACHE_KEY = "desk-navbar-extended-settings";
   const SETTINGS_CACHE_TTL = 5 * 60 * 1000; // 5 minutes
   const TIMEZONE_CACHE_KEY = "desk-navbar-extended-timezones";
@@ -71,15 +72,91 @@
   }
 
   function ensureClockContainer() {
-    const node = findClockNode();
-    if (!node) {
+    const actionNode = findClockNode();
+    if (!actionNode) {
       return null;
     }
-    if (!node.hasAttribute(CLOCK_ATTR)) {
-      node.setAttribute(CLOCK_ATTR, CLOCK_ATTR_VALUE);
+    if (!actionNode.hasAttribute(CLOCK_ATTR)) {
+      actionNode.setAttribute(CLOCK_ATTR, CLOCK_ATTR_VALUE);
     }
-    node.classList.add("desk-navbar-extended-clock-toggle");
-    return node;
+    actionNode.classList.add("desk-navbar-extended-clock-toggle");
+
+    const host = actionNode.parentElement || actionNode;
+    let container = host.querySelector(`:scope > .${CLOCK_CONTAINER_CLASS}`);
+    if (!container) {
+      container = document.createElement("div");
+      container.className = CLOCK_CONTAINER_CLASS;
+      container.hidden = true;
+      container.setAttribute("role", "region");
+      container.setAttribute("aria-live", "polite");
+      actionNode.insertAdjacentElement("afterend", container);
+    }
+
+    state.clockContainer = container;
+    return container;
+  }
+
+  function getClockPanel() {
+    return state.clockContainer?.querySelector(".desk-navbar-extended-clock");
+  }
+
+  function hideClockPanel() {
+    if (!state.clockContainer) {
+      return;
+    }
+    state.clockContainer.innerHTML = "";
+    state.clockContainer.hidden = true;
+    state.clockNodes = {};
+  }
+
+  function toggleClockVisibility(forceRefresh = false) {
+    const container = ensureClockContainer();
+    if (!container) {
+      return false;
+    }
+    const panel = getClockPanel();
+    if (panel && !forceRefresh) {
+      hideClockPanel();
+      return false;
+    }
+
+    const shouldForce = Boolean(forceRefresh || !panel);
+    Promise.resolve(bootstrapClock(shouldForce)).catch((error) => {
+      console.error("Failed to render clock panel", error); // eslint-disable-line no-console
+    });
+    return false;
+  }
+
+  function attachClockToggle(actionNode) {
+    if (!actionNode) {
+      return;
+    }
+
+    ensureClockContainer();
+
+    if (!actionNode.dataset.clockToggleAttached) {
+      actionNode.dataset.clockToggleAttached = "1";
+      actionNode.addEventListener(
+        "click",
+        (event) => {
+          event.preventDefault();
+          event.stopPropagation();
+          toggleClockVisibility();
+          return false;
+        },
+        { capture: true },
+      );
+    }
+
+    const dropdown = actionNode.closest(".dropdown, .btn-group");
+    if (dropdown && !dropdown.dataset.clockDropdownAttached) {
+      dropdown.dataset.clockDropdownAttached = "1";
+      dropdown.addEventListener("shown.bs.dropdown", () => {
+        if (getClockPanel()) {
+          toggleClockVisibility(true);
+        }
+      });
+    }
   }
 
   function formatTime(date, format) {
@@ -155,10 +232,12 @@
     }
 
     state.clockContainer.appendChild(wrapper);
+    state.clockContainer.hidden = false;
   }
 
   function updateClockTick() {
     if (!state.timezoneSnapshot) return;
+    if (!state.clockContainer || state.clockContainer.hidden) return;
     const offset = Date.now() - state.timezoneSnapshot.syncTime;
     const format = state.settings.clock.time_format;
 
@@ -254,8 +333,10 @@
 
     // Initialize existing features
     if (settings.features.clock) {
-      whenClockActionAvailable(() => {
-        bootstrapClock();
+      whenClockActionAvailable((actionNode) => {
+        frappe.provide("frappe.desk_navbar_extended");
+        frappe.desk_navbar_extended.show_clock = () => toggleClockVisibility();
+        attachClockToggle(actionNode);
       });
     }
     if (settings.features.voice_search && window.desk_navbar_extended?.voice) {

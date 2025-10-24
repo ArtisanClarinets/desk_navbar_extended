@@ -238,7 +238,14 @@
 
   window.desk_navbar_extended.voice.init = (settings) => {
     state.settings = settings;
-    frappe.ready(() => {
+    const onReady = (callback) => {
+      if (document.readyState === "loading") {
+        document.addEventListener("DOMContentLoaded", callback, { once: true });
+      } else {
+        callback();
+      }
+    };
+    onReady(() => {
       installButton();
     });
   };
