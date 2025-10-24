@@ -7,7 +7,7 @@
   let state = { kpis: [], container: null, refreshInterval: null };
 
   function init() {
-    if (!frappe.desk_navbar_extended?.settings?.enable_kpi_widgets) return;
+    if (!frappe.desk_navbar_extended?.settings?.features?.kpi_widgets) return;
     buildContainer();
     loadKPIs();
     startAutoRefresh();

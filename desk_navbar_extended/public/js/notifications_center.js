@@ -7,7 +7,7 @@
   let state = { notifications: [], panel: null, badge: null, unreadCount: 0 };
 
   function init() {
-    if (!frappe.desk_navbar_extended?.settings?.enable_notifications_center)
+    if (!frappe.desk_navbar_extended?.settings?.features?.notifications_center)
       return;
     buildPanel();
     loadNotifications();

@@ -7,7 +7,7 @@
   let state = { options: [], menu: null };
 
   function init() {
-    if (!frappe.desk_navbar_extended?.settings?.enable_quick_create) return;
+    if (!frappe.desk_navbar_extended?.settings?.features?.quick_create) return;
     buildMenu();
     loadOptions();
     console.log("[Quick Create] Ready");

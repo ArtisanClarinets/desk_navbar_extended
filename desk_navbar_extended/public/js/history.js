@@ -7,7 +7,7 @@
   let state = { groups: [], menu: null };
 
   function init() {
-    if (!frappe.desk_navbar_extended?.settings?.enable_grouped_history) return;
+    if (!frappe.desk_navbar_extended?.settings?.features?.grouped_history) return;
     buildMenu();
     loadHistory();
     console.log("[History] Ready");
