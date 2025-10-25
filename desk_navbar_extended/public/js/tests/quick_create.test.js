@@ -1,6 +1,8 @@
 QUnit.module("Quick Create", function () {
   QUnit.test("quick create menu renders", function (assert) {
-    frappe.desk_navbar_extended = { settings: { enable_quick_create: true } };
+    frappe.desk_navbar_extended = {
+      settings: { features: { quick_create: true } },
+    };
     assert.ok(
       frappe.desk_navbar_extended.quick_create,
       "Quick create module exists",

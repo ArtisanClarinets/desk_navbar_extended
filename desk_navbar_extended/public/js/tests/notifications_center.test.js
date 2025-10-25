@@ -3,7 +3,7 @@ QUnit.module("Notifications Center", function (hooks) {
     this.originalCall = frappe.call;
     this.$navbar = $('<div class="navbar-right"></div>').appendTo("body");
     frappe.desk_navbar_extended = {
-      settings: { enable_notifications_center: true },
+      settings: { features: { notifications_center: true } },
       notifications_center: frappe.desk_navbar_extended.notifications_center,
     };
   });

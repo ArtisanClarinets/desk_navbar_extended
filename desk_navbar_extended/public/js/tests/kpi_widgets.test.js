@@ -10,7 +10,10 @@ QUnit.module("KPI Widgets", function (hooks) {
     };
     frappe.call = () => Promise.resolve({ message: [] });
     frappe.desk_navbar_extended = {
-      settings: { enable_kpi_widgets: true, kpi: { refresh_interval: 120 } },
+      settings: {
+        features: { kpi_widgets: true },
+        kpi: { refresh_interval: 120 },
+      },
       kpi_widgets: frappe.desk_navbar_extended.kpi_widgets,
     };
   });

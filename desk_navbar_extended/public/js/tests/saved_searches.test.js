@@ -9,7 +9,7 @@ QUnit.module("Saved Searches", function (hooks) {
     };
     applySpy.called = false;
     frappe.desk_navbar_extended = {
-      settings: { enable_saved_searches: true },
+      settings: { features: { saved_searches: true } },
       saved_searches: frappe.desk_navbar_extended.saved_searches,
       search_filters: { applyFilters: applySpy },
     };

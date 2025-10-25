@@ -3,7 +3,7 @@ QUnit.module("History", function (hooks) {
     this.originalCall = frappe.call;
     this.$navbar = $('<div class="navbar-right"></div>').appendTo("body");
     frappe.desk_navbar_extended = {
-      settings: { enable_grouped_history: true },
+      settings: { features: { grouped_history: true } },
       history: frappe.desk_navbar_extended.history,
     };
   });

@@ -16,7 +16,8 @@
   };
 
   function init() {
-    if (!frappe.desk_navbar_extended?.settings?.features?.command_palette) return;
+    if (!frappe.desk_navbar_extended?.settings?.features?.command_palette)
+      return;
     setupKeyboard();
     buildModal();
     console.log("[Command Palette] Ready");

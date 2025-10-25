@@ -14,7 +14,7 @@ TESTS_DIR.mkdir(parents=True, exist_ok=True)
 # ============================================================================
 COMMAND_PALETTE_TEST = """QUnit.module("Command Palette", function() {
   QUnit.test("initializes when feature enabled", function(assert) {
-    frappe.desk_navbar_extended = { settings: { enable_command_palette: true } };
+    frappe.desk_navbar_extended = { settings: { features: { command_palette: true } } };
     assert.ok(frappe.desk_navbar_extended.command_palette, "Command palette module exists");
   });
 
@@ -43,7 +43,7 @@ COMMAND_PALETTE_TEST = """QUnit.module("Command Palette", function() {
 # ============================================================================
 SEARCH_FILTERS_TEST = """QUnit.module("Search Filters", function() {
   QUnit.test("filter bar renders when enabled", function(assert) {
-    frappe.desk_navbar_extended = { settings: { enable_smart_filters: true } };
+    frappe.desk_navbar_extended = { settings: { features: { smart_filters: true } } };
     assert.ok(frappe.desk_navbar_extended.search_filters, "Search filters module exists");
   });
 
@@ -63,7 +63,7 @@ SEARCH_FILTERS_TEST = """QUnit.module("Search Filters", function() {
 # ============================================================================
 SAVED_SEARCHES_TEST = """QUnit.module("Saved Searches", function() {
   QUnit.test("saved searches menu exists", function(assert) {
-    frappe.desk_navbar_extended = { settings: { enable_saved_searches: true } };
+    frappe.desk_navbar_extended = { settings: { features: { saved_searches: true } } };
     assert.ok(frappe.desk_navbar_extended.saved_searches, "Saved searches module exists");
   });
 
@@ -83,7 +83,7 @@ SAVED_SEARCHES_TEST = """QUnit.module("Saved Searches", function() {
 # ============================================================================
 PINS_TEST = """QUnit.module("Pins", function() {
   QUnit.test("pin bar renders", function(assert) {
-    frappe.desk_navbar_extended = { settings: { enable_pins: true } };
+    frappe.desk_navbar_extended = { settings: { features: { pins: true } } };
     assert.ok(frappe.desk_navbar_extended.pins, "Pins module exists");
   });
 
@@ -102,7 +102,7 @@ PINS_TEST = """QUnit.module("Pins", function() {
 # ============================================================================
 QUICK_CREATE_TEST = """QUnit.module("Quick Create", function() {
   QUnit.test("quick create menu renders", function(assert) {
-    frappe.desk_navbar_extended = { settings: { enable_quick_create: true } };
+    frappe.desk_navbar_extended = { settings: { features: { quick_create: true } } };
     assert.ok(frappe.desk_navbar_extended.quick_create, "Quick create module exists");
   });
 
@@ -122,7 +122,7 @@ QUICK_CREATE_TEST = """QUnit.module("Quick Create", function() {
 # ============================================================================
 HISTORY_TEST = """QUnit.module("History", function() {
   QUnit.test("history menu exists", function(assert) {
-    frappe.desk_navbar_extended = { settings: { enable_grouped_history: true } };
+    frappe.desk_navbar_extended = { settings: { features: { grouped_history: true } } };
     assert.ok(frappe.desk_navbar_extended.history, "History module exists");
   });
 });
@@ -133,7 +133,7 @@ HISTORY_TEST = """QUnit.module("History", function() {
 # ============================================================================
 NOTIFICATIONS_TEST = """QUnit.module("Notifications Center", function() {
   QUnit.test("notifications panel exists", function(assert) {
-    frappe.desk_navbar_extended = { settings: { enable_notifications_center: true } };
+    frappe.desk_navbar_extended = { settings: { features: { notifications_center: true } } };
     assert.ok(frappe.desk_navbar_extended.notifications_center, "Notifications module exists");
   });
 
@@ -153,7 +153,7 @@ NOTIFICATIONS_TEST = """QUnit.module("Notifications Center", function() {
 # ============================================================================
 KPI_WIDGETS_TEST = """QUnit.module("KPI Widgets", function() {
   QUnit.test("kpi container renders", function(assert) {
-    frappe.desk_navbar_extended = { settings: { enable_kpi_widgets: true } };
+    frappe.desk_navbar_extended = { settings: { features: { kpi_widgets: true }, kpi: { refresh_interval: 120 } } };
     assert.ok(frappe.desk_navbar_extended.kpi_widgets, "KPI widgets module exists");
   });
 
@@ -173,7 +173,7 @@ KPI_WIDGETS_TEST = """QUnit.module("KPI Widgets", function() {
 # ============================================================================
 HELP_SEARCH_TEST = """QUnit.module("Help Search", function() {
   QUnit.test("help modal exists", function(assert) {
-    frappe.desk_navbar_extended = { settings: { enable_help_search: true } };
+    frappe.desk_navbar_extended = { settings: { features: { help_search: true } } };
     assert.ok(frappe.desk_navbar_extended.help_search, "Help search module exists");
   });
 
@@ -193,7 +193,7 @@ HELP_SEARCH_TEST = """QUnit.module("Help Search", function() {
 # ============================================================================
 DENSITY_TOGGLE_TEST = """QUnit.module("Density Toggle", function() {
   QUnit.test("density toggle button exists", function(assert) {
-    frappe.desk_navbar_extended = { settings: { enable_density_toggle: true } };
+    frappe.desk_navbar_extended = { settings: { features: { density_toggle: true } } };
     assert.ok(frappe.desk_navbar_extended.density_toggle, "Density toggle module exists");
   });
 

@@ -2,7 +2,7 @@ QUnit.module("Help Search", function (hooks) {
   hooks.beforeEach(function () {
     this.originalCall = frappe.call;
     frappe.desk_navbar_extended = {
-      settings: { enable_help_search: true },
+      settings: { features: { help_search: true } },
       help_search: frappe.desk_navbar_extended.help_search,
     };
   });
