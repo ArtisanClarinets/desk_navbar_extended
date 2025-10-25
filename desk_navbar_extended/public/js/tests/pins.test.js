@@ -4,7 +4,7 @@ QUnit.module("Pins", function (hooks) {
     this.originalDialog = frappe.ui.Dialog;
     this.$breadcrumbs = $('<div id="navbar-breadcrumbs"></div>').appendTo("body");
     frappe.desk_navbar_extended = {
-      settings: { enable_pins: true },
+      settings: { features: { pins: true } },
       pins: frappe.desk_navbar_extended.pins,
     };
   });

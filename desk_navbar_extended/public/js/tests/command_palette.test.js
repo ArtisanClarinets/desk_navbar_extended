@@ -2,7 +2,7 @@ QUnit.module("Command Palette", function (hooks) {
   hooks.beforeEach(function () {
     this.originalCall = frappe.call;
     frappe.desk_navbar_extended = {
-      settings: { enable_command_palette: true },
+      settings: { features: { command_palette: true } },
       command_palette: frappe.desk_navbar_extended.command_palette,
       saved_searches: { applySearch: function (name) { this.last = name; } },
     };

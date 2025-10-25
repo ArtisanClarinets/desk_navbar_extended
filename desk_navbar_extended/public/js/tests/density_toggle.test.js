@@ -1,6 +1,8 @@
 QUnit.module("Density Toggle", function () {
   QUnit.test("density toggle button exists", function (assert) {
-    frappe.desk_navbar_extended = { settings: { enable_density_toggle: true } };
+    frappe.desk_navbar_extended = {
+      settings: { features: { density_toggle: true } },
+    };
     assert.ok(
       frappe.desk_navbar_extended.density_toggle,
       "Density toggle module exists",

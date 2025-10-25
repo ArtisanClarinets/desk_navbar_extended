@@ -11,7 +11,8 @@
   };
 
   function init() {
-    if (!frappe.desk_navbar_extended?.settings?.enable_smart_filters) return;
+    if (!frappe.desk_navbar_extended?.settings?.features?.smart_filters)
+      return;
     buildFilterBar();
     hookIntoAwesomebar();
     console.log("[Search Filters] Ready");

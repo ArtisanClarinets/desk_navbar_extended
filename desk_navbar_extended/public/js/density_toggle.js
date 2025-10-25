@@ -8,7 +8,8 @@
   let state = { density: "comfortable", toggle: null };
 
   function init() {
-    if (!frappe.desk_navbar_extended?.settings?.enable_density_toggle) return;
+    if (!frappe.desk_navbar_extended?.settings?.features?.density_toggle)
+      return;
     loadPreference();
     buildToggle();
     applyDensity();

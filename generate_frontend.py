@@ -25,7 +25,7 @@ COMMAND_PALETTE = """/**
   let state = { isOpen: false, query: "", results: [], selectedIdx: 0, modal: null, input: null, list: null };
 
   function init() {
-    if (!frappe.desk_navbar_extended?.settings?.enable_command_palette) return;
+    if (!frappe.desk_navbar_extended?.settings?.features?.\1) return;
     setupKeyboard();
     buildModal();
     console.log("[Command Palette] Ready");
@@ -214,7 +214,7 @@ SEARCH_FILTERS = """/**
   let state = { filters: { doctype: null, owner: null, date_from: null, date_to: null }, filterBar: null };
 
   function init() {
-    if (!frappe.desk_navbar_extended?.settings?.enable_smart_filters) return;
+    if (!frappe.desk_navbar_extended?.settings?.features?.\1) return;
     buildFilterBar();
     hookIntoAwesomebar();
     console.log("[Search Filters] Ready");
@@ -325,7 +325,7 @@ SAVED_SEARCHES = """/**
   let state = { searches: [], menu: null, dropdown: null };
 
   function init() {
-    if (!frappe.desk_navbar_extended?.settings?.enable_saved_searches) return;
+    if (!frappe.desk_navbar_extended?.settings?.features?.\1) return;
     buildMenu();
     loadSearches();
     console.log("[Saved Searches] Ready");
@@ -445,7 +445,7 @@ PINS = """/**
   let state = { pins: [], bar: null };
 
   function init() {
-    if (!frappe.desk_navbar_extended?.settings?.enable_pins) return;
+    if (!frappe.desk_navbar_extended?.settings?.features?.\1) return;
     buildPinBar();
     loadPins();
     console.log("[Pins] Ready");
@@ -546,7 +546,7 @@ QUICK_CREATE = """/**
   let state = { options: [], menu: null };
 
   function init() {
-    if (!frappe.desk_navbar_extended?.settings?.enable_quick_create) return;
+    if (!frappe.desk_navbar_extended?.settings?.features?.\1) return;
     buildMenu();
     loadOptions();
     console.log("[Quick Create] Ready");
@@ -607,7 +607,7 @@ HISTORY = """/**
   let state = { groups: [], menu: null };
 
   function init() {
-    if (!frappe.desk_navbar_extended?.settings?.enable_grouped_history) return;
+    if (!frappe.desk_navbar_extended?.settings?.features?.\1) return;
     buildMenu();
     loadHistory();
     console.log("[History] Ready");
@@ -680,7 +680,7 @@ NOTIFICATIONS = """/**
   let state = { notifications: [], panel: null, badge: null };
 
   function init() {
-    if (!frappe.desk_navbar_extended?.settings?.enable_notifications_center) return;
+    if (!frappe.desk_navbar_extended?.settings?.features?.\1) return;
     buildPanel();
     loadNotifications();
     console.log("[Notifications] Ready");
@@ -791,7 +791,7 @@ KPI_WIDGETS = """/**
   let state = { kpis: [], container: null, refreshInterval: null };
 
   function init() {
-    if (!frappe.desk_navbar_extended?.settings?.enable_kpi_widgets) return;
+    if (!frappe.desk_navbar_extended?.settings?.features?.\1) return;
     buildContainer();
     loadKPIs();
     startAutoRefresh();
@@ -853,7 +853,7 @@ HELP_SEARCH = """/**
   let state = { modal: null, input: null, results: null };
 
   function init() {
-    if (!frappe.desk_navbar_extended?.settings?.enable_help_search) return;
+    if (!frappe.desk_navbar_extended?.settings?.features?.\1) return;
     buildModal();
     setupKeyboard();
     console.log("[Help Search] Ready");
@@ -966,7 +966,7 @@ DENSITY_TOGGLE = """/**
   let state = { density: "comfortable", toggle: null };
 
   function init() {
-    if (!frappe.desk_navbar_extended?.settings?.enable_density_toggle) return;
+    if (!frappe.desk_navbar_extended?.settings?.features?.\1) return;
     loadPreference();
     buildToggle();
     applyDensity();

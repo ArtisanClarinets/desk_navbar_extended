@@ -25,7 +25,7 @@ COMMAND_PALETTE_JS = '''/**
 		state: { isOpen: false, searchQuery: "", results: [], selectedIndex: 0, allCommands: [], modal: null, input: null, resultsList: null },
 
 		init: function () {
-			if (!frappe.desk_navbar_extended?.settings?.enable_command_palette) return;
+			if (!frappe.desk_navbar_extended?.settings?.features?.\1) return;
 			this.setupKeyboardShortcuts();
 			this.buildModal();
 

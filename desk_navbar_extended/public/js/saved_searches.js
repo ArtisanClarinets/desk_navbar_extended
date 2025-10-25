@@ -7,7 +7,8 @@
   let state = { searches: [], menu: null, dropdown: null };
 
   function init() {
-    if (!frappe.desk_navbar_extended?.settings?.enable_saved_searches) return;
+    if (!frappe.desk_navbar_extended?.settings?.features?.saved_searches)
+      return;
     buildMenu();
     loadSearches();
     console.log("[Saved Searches] Ready");

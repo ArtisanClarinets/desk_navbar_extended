@@ -7,7 +7,7 @@ QUnit.module("Search Filters", function (hooks) {
       return Promise.resolve({ args, source: "original" });
     };
     frappe.desk_navbar_extended = {
-      settings: { enable_smart_filters: true },
+      settings: { features: { smart_filters: true } },
       search_filters: frappe.desk_navbar_extended.search_filters,
     };
   });
