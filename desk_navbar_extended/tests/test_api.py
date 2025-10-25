@@ -37,5 +37,5 @@ class TestDeskNavbarExtendedAPI(FrappeTestCase):
         self.assertEqual(response["job_id"], "JOB-ID")
 
     def test_transcribe_audio_rejects_invalid_payload(self):
-        with self.assertRaises(Exception):
+        with self.assertRaises((frappe.ValidationError, TypeError, ValueError)):
             frappe.call("desk_navbar_extended.api.transcribe_audio", audio="not-base64==")

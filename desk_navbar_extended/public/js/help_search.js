@@ -84,7 +84,9 @@
 
   function renderResults(items) {
     if (!items.length) {
-      state.results.html(`<div class="help-empty">${__("No results found")}</div>`);
+      state.results.html(
+        `<div class="help-empty">${__("No results found")}</div>`,
+      );
       return;
     }
 
@@ -104,14 +106,19 @@
 
     let html = "";
     Object.entries(grouped).forEach(([type, entries]) => {
-      html += `<div class="help-category"><h6>${labels[type] || labels.other}</h6>`;
+      html += `<div class="help-category"><h6>${
+        labels[type] || labels.other
+      }</h6>`;
       entries.forEach((entry) => {
         const isExternal = Boolean(entry.external);
         const href = entry.route || entry.url || "#";
-        const icon = entry.icon || (isExternal ? "fa fa-external-link" : "fa fa-book");
-        const attrs = isExternal ? " target=\"_blank\" rel=\"noopener\"" : "";
+        const icon =
+          entry.icon || (isExternal ? "fa fa-external-link" : "fa fa-book");
+        const attrs = isExternal ? ' target="_blank" rel="noopener"' : "";
         html += `<a class="help-result" href="${href}"${attrs}>`;
-        html += `<i class="${icon}"></i> ${frappe.utils.escape_html(entry.title || "")}`;
+        html += `<i class="${icon}"></i> ${frappe.utils.escape_html(
+          entry.title || "",
+        )}`;
         if (entry.description)
           html += `<div class="help-result__desc text-muted">${frappe.utils.escape_html(
             entry.description,

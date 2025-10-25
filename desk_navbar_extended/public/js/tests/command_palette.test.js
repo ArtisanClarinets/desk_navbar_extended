@@ -4,7 +4,11 @@ QUnit.module("Command Palette", function (hooks) {
     frappe.desk_navbar_extended = {
       settings: { features: { command_palette: true } },
       command_palette: frappe.desk_navbar_extended.command_palette,
-      saved_searches: { applySearch: function (name) { this.last = name; } },
+      saved_searches: {
+        applySearch: function (name) {
+          this.last = name;
+        },
+      },
     };
     this.applyStub = frappe.desk_navbar_extended.saved_searches;
   });
@@ -51,9 +55,7 @@ QUnit.module("Command Palette", function (hooks) {
         "categories rendered",
       );
 
-      $(".cmd-palette__item")
-        .last()
-        .trigger("click");
+      $(".cmd-palette__item").last().trigger("click");
 
       setTimeout(() => {
         assert.strictEqual(

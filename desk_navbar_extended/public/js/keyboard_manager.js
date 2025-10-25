@@ -39,7 +39,9 @@
       .sort((a, b) => a.combo.localeCompare(b.combo))
       .map(
         ({ combo, description }) =>
-          `<tr><td><kbd>${formatCombo(combo)}</kbd></td><td>${__(description || "")}</td></tr>`,
+          `<tr><td><kbd>${formatCombo(combo)}</kbd></td><td>${__(
+            description || "",
+          )}</td></tr>`,
       )
       .join("");
     frappe.msgprint({
@@ -152,7 +154,9 @@
   function formatCombo(combo) {
     return combo
       .split("+")
-      .map((part) => part.length === 1 ? part.toUpperCase() : part.toUpperCase())
+      .map((part) =>
+        part.length === 1 ? part.toUpperCase() : part.toUpperCase(),
+      )
       .join("+");
   }
 

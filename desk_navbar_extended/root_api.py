@@ -17,6 +17,7 @@ from desk_navbar_extended.desk_navbar_extended.doctype.desk_navbar_extended_sett
     get_settings_doc,
 )
 
+
 @frappe.whitelist()
 def get_settings() -> dict[str, Any]:
     """Return sanitized settings for the current session."""

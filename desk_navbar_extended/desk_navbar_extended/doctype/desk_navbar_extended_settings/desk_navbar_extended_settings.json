@@ -23,10 +23,7 @@
     "enable_notifications_center",
     "enable_role_toggles",
     "enable_kpi_widgets",
-    "enable_timezone_switcher",
-    "enable_voice_actions",
     "enable_help_search",
-    "enable_layout_bookmarks",
     "enable_usage_analytics",
     "feature_roles",
     "section_clock",
@@ -137,32 +134,11 @@
       "description": "Glanceable metrics"
     },
     {
-      "fieldname": "enable_timezone_switcher",
-      "fieldtype": "Check",
-      "label": "Enable Timezone Switcher",
-      "default": "1",
-      "description": "Uses Desk Navbar Timezone"
-    },
-    {
-      "fieldname": "enable_voice_actions",
-      "fieldtype": "Check",
-      "label": "Enable Voice Action Commands",
-      "default": "0",
-      "description": "Extends voice_search.js"
-    },
-    {
       "fieldname": "enable_help_search",
       "fieldtype": "Check",
       "label": "Enable Help/Docs Search",
       "default": "1",
       "description": "Frappe docs and translations"
-    },
-    {
-      "fieldname": "enable_layout_bookmarks",
-      "fieldtype": "Check",
-      "label": "Enable Layout Bookmarks",
-      "default": "0",
-      "description": "Save/restore desk layout"
     },
     {
       "fieldname": "enable_usage_analytics",

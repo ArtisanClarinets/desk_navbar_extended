@@ -7,11 +7,12 @@ from typing import Any
 
 import frappe
 from frappe import _
-# get_datetime was removed because it's not used in this module
 
 from desk_navbar_extended.desk_navbar_extended.doctype.desk_navbar_extended_settings.desk_navbar_extended_settings import (
     get_enabled_features_for_user,
 )
+
+# get_datetime was removed because it's not used in this module
 
 
 @frappe.whitelist()

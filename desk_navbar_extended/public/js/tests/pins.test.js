@@ -2,7 +2,9 @@ QUnit.module("Pins", function (hooks) {
   hooks.beforeEach(function () {
     this.originalCall = frappe.call;
     this.originalDialog = frappe.ui.Dialog;
-    this.$breadcrumbs = $('<div id="navbar-breadcrumbs"></div>').appendTo("body");
+    this.$breadcrumbs = $('<div id="navbar-breadcrumbs"></div>').appendTo(
+      "body",
+    );
     frappe.desk_navbar_extended = {
       settings: { features: { pins: true } },
       pins: frappe.desk_navbar_extended.pins,
@@ -19,7 +21,16 @@ QUnit.module("Pins", function (hooks) {
     const done = assert.async();
     const calls = [];
     const responses = [
-      { message: [{ name: "PIN-1", label: "Inbox", route: "/app/inbox", icon: "fa fa-inbox" }] },
+      {
+        message: [
+          {
+            name: "PIN-1",
+            label: "Inbox",
+            route: "/app/inbox",
+            icon: "fa fa-inbox",
+          },
+        ],
+      },
       { message: { name: "PIN-2" } },
       { message: [] },
     ];
@@ -48,7 +59,11 @@ QUnit.module("Pins", function (hooks) {
 
     setTimeout(() => {
       const iconClass = $(".pin-item i").attr("class");
-      assert.strictEqual(iconClass, "fa fa-inbox", "pin uses icon from payload");
+      assert.strictEqual(
+        iconClass,
+        "fa fa-inbox",
+        "pin uses icon from payload",
+      );
 
       $(".pin-bar__add").trigger("click");
 

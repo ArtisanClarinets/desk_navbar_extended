@@ -253,7 +253,9 @@
           category,
           title: item.title || item.label || item.value || "",
           description: item.description,
-          doctype: item.doctype || (item.type === "doctype" ? item.value : item.doctype),
+          doctype:
+            item.doctype ||
+            (item.type === "doctype" ? item.value : item.doctype),
           name:
             item.name ||
             (item.type === "saved_search" ? item.value : item.name) ||
@@ -268,12 +270,14 @@
   }
 
   function toTitle(value) {
-    return (value || "")
-      .replace(/[_\-]+/g, " ")
-      .split(" ")
-      .filter(Boolean)
-      .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-      .join(" ") || "Other";
+    return (
+      (value || "")
+        .replace(/[_\-]+/g, " ")
+        .split(" ")
+        .filter(Boolean)
+        .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+        .join(" ") || "Other"
+    );
   }
 
   function showLoading() {

@@ -17,8 +17,17 @@ QUnit.module("Help Search", function (hooks) {
     frappe.call = () =>
       Promise.resolve({
         message: [
-          { type: "help_article", title: "Usage", route: "/app/help-article/USG" },
-          { type: "external_doc", title: "Docs", route: "https://example.com", external: true },
+          {
+            type: "help_article",
+            title: "Usage",
+            route: "/app/help-article/USG",
+          },
+          {
+            type: "external_doc",
+            title: "Docs",
+            route: "https://example.com",
+            external: true,
+          },
         ],
       });
 
@@ -33,7 +42,10 @@ QUnit.module("Help Search", function (hooks) {
         const categories = $(".help-category h6")
           .map((_, el) => $(el).text().trim())
           .get();
-        assert.ok(categories.includes(__("Help Articles")), "articles rendered");
+        assert.ok(
+          categories.includes(__("Help Articles")),
+          "articles rendered",
+        );
         assert.ok(categories.includes(__("Documentation")), "docs rendered");
         assert.equal($(".help-result").length, 2, "results listed");
         done();

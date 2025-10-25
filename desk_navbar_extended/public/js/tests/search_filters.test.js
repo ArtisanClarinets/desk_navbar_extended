@@ -33,7 +33,11 @@ QUnit.module("Search Filters", function (hooks) {
       frappe.search.utils
         .search("plan")
         .then((result) => {
-          assert.deepEqual(result, [{ name: "TASK-0001" }], "returns filtered results");
+          assert.deepEqual(
+            result,
+            [{ name: "TASK-0001" }],
+            "returns filtered results",
+          );
           frappe.desk_navbar_extended.search_filters.applyFilters({
             doctype_filter: "Task",
             filters: { owner: "user@example.com" },

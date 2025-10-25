@@ -114,7 +114,10 @@
         freeze: false,
       });
       if (message?.count) {
-        state.unreadCount = Math.max((state.unreadCount || 1) - message.count, 0);
+        state.unreadCount = Math.max(
+          (state.unreadCount || 1) - message.count,
+          0,
+        );
       }
       await loadNotifications();
     } catch (err) {

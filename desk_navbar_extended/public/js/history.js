@@ -77,7 +77,9 @@
     if (!state.menu) return;
     if (!state.groups.length) {
       state.menu.html(
-        `<div class="history-menu__empty text-muted">${__("No recent activity")}</div>`,
+        `<div class="history-menu__empty text-muted">${__(
+          "No recent activity",
+        )}</div>`,
       );
       return;
     }
@@ -85,15 +87,21 @@
     let html = "";
     state.groups.forEach((group) => {
       const icon = group.icon || "fa fa-file";
-      const label = frappe.utils.escape_html(group.label || group.doctype || "");
+      const label = frappe.utils.escape_html(
+        group.label || group.doctype || "",
+      );
       html += `<div class="history-group">`;
       html += `<div class="history-group__header"><i class="${icon}"></i> ${label} <span class="badge">${
         group.count || group.items?.length || 0
       }</span></div>`;
       html += `<div class="history-group__items">`;
       (group.items || []).forEach((item) => {
-        const title = frappe.utils.escape_html(item.title || item.name || item.doc_name || "");
-        html += `<a class="dropdown-item history-item" href="${item.route || "#"}">`;
+        const title = frappe.utils.escape_html(
+          item.title || item.name || item.doc_name || "",
+        );
+        html += `<a class="dropdown-item history-item" href="${
+          item.route || "#"
+        }">`;
         html += `<span class="history-item__name">${title}</span>`;
         if (item.modified)
           html += `<span class="history-item__time text-muted">${comment_when(

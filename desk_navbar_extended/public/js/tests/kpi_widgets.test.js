@@ -2,7 +2,9 @@ QUnit.module("KPI Widgets", function (hooks) {
   hooks.beforeEach(function () {
     this.originalCall = frappe.call;
     this.originalInterval = window.setInterval;
-    this.$breadcrumbs = $('<div id="navbar-breadcrumbs"></div>').appendTo("body");
+    this.$breadcrumbs = $('<div id="navbar-breadcrumbs"></div>').appendTo(
+      "body",
+    );
     this.lastDelay = null;
     window.setInterval = (fn, delay) => {
       this.lastDelay = delay;
@@ -27,6 +29,10 @@ QUnit.module("KPI Widgets", function (hooks) {
 
   QUnit.test("respects configured refresh interval", function (assert) {
     frappe.desk_navbar_extended.kpi_widgets.init();
-    assert.strictEqual(this.lastDelay, 120000, "interval uses configured seconds");
+    assert.strictEqual(
+      this.lastDelay,
+      120000,
+      "interval uses configured seconds",
+    );
   });
 });

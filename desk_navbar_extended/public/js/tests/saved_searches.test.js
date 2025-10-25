@@ -2,7 +2,9 @@ QUnit.module("Saved Searches", function (hooks) {
   hooks.beforeEach(function () {
     this.originalCall = frappe.call;
     this.originalPrompt = frappe.prompt;
-    this.$search = $('<div id="navbar-search"><input type="text" /></div>').appendTo("body");
+    this.$search = $(
+      '<div id="navbar-search"><input type="text" /></div>',
+    ).appendTo("body");
     frappe.prompt = () => Promise.resolve("Team Tasks");
     const applySpy = function () {
       applySpy.called = true;

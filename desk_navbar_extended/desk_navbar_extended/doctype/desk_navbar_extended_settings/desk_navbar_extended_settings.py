@@ -61,9 +61,6 @@ def get_enabled_features_for_user(user: str | None = None) -> dict[str, bool]:
         "notifications_center": is_enabled("enable_notifications_center"),
         "role_toggles": bool(settings.enable_role_toggles),
         "kpi_widgets": is_enabled("enable_kpi_widgets"),
-        "timezone_switcher": is_enabled("enable_timezone_switcher"),
-        "voice_actions": is_enabled("enable_voice_actions"),
         "help_search": is_enabled("enable_help_search"),
-        "layout_bookmarks": is_enabled("enable_layout_bookmarks"),
         "usage_analytics": bool(settings.enable_usage_analytics),
     }

@@ -75,6 +75,10 @@ def create_saved_search(payload: str | dict[str, Any]) -> dict[str, Any]:
     if not data.get("title") or not data.get("query"):
         frappe.throw(_("Title and query are required"))
 
+    # Check permissions for global searches
+    if data.get("is_global") and "System Manager" not in frappe.get_roles():
+        frappe.throw(_("Only System Managers can create global searches"), frappe.PermissionError)
+
     doc = frappe.get_doc(
         {
             "doctype": "Desk Navbar Saved Search",
@@ -113,6 +117,14 @@ def update_saved_search(name: str, payload: str | dict[str, Any]) -> dict[str, A
     # Check permissions
     if doc.owner != frappe.session.user and "System Manager" not in frappe.get_roles():
         frappe.throw(_("Insufficient permissions"), frappe.PermissionError)
+
+    # Check permissions for setting is_global flag
+    if (
+        "is_global" in data
+        and data.get("is_global")
+        and "System Manager" not in frappe.get_roles()
+    ):
+        frappe.throw(_("Only System Managers can create global searches"), frappe.PermissionError)
 
     # Update fields
     if "title" in data:
