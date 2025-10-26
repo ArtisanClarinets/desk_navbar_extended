@@ -324,7 +324,19 @@
     );
   }
 
+  function ensureRootNamespace() {
+    const body = document.body;
+    if (!body) {
+      return;
+    }
+    if (!body.classList.contains("desk-navbar-extended")) {
+      body.classList.add("desk-navbar-extended");
+    }
+  }
+
   async function init() {
+    ensureRootNamespace();
+
     const settings = await fetchSettings();
 
     // Store settings globally for new modules
@@ -367,6 +379,7 @@
   }
 
   onReady(() => {
+    ensureRootNamespace();
     init().catch((error) => {
       console.error("Failed to initialize Desk Navbar Extended", error); // eslint-disable-line no-console
     });
